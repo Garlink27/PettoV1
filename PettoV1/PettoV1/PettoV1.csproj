@@ -66,28 +66,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Categoria.xaml">
+	  <MauiXaml Update="Views\Categoria.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Chat.xaml">
+	  <MauiXaml Update="Views\Chat.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Configuracion.xaml">
+	  <MauiXaml Update="Views\Configuracion.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\DetalleTarea.xaml">
+	  <MauiXaml Update="Views\DetalleTarea.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Estadisticas.xaml">
+	  <MauiXaml Update="Views\Estadisticas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\HistorialTareas.xaml">
+	  <MauiXaml Update="Views\HistorialTareas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Perfil.xaml">
+	  <MauiXaml Update="Views\Perfil.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Tareas.xaml">
+	  <MauiXaml Update="Views\Tareas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

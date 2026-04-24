@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="MigrationApp/MigrationApp.csproj" Id="0a0a339b-940c-437b-bffa-0f310c704bcb" />
   <Project Path="PettoV1/PettoV1.csproj" />
+  <Project Path="SharedResources/SharedResources.csproj" Id="3b302016-bc58-439a-9f6c-820c43ba956a" />
 </Solution>

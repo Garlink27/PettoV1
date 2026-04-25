@@ -1,10 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PettoV1.Pages.MainPage">
+             xmlns:vm="clr-namespace:PettoV1.ViewModels"
+             x:Class="PettoV1.Views.MainPage"
+             x:DataType="vm:MainViewModel"
+             BackgroundColor="#D5F9FF"
+             Title="Home">
 
-    <ScrollView>
-       
-    </ScrollView>
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
+        <!-- ── Header ── -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
+              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+            <ImageButton Grid.Column="0"
+                         Source="menu_icon.png"
+                         WidthRequest="36" HeightRequest="36"
+                         BackgroundColor="Transparent"
+                         Command="{Binding AbrirMenuCommand}"/>
+            <Label Grid.Column="1"
+                   Text="{Binding FechaHora}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="13"
+                   TextColor="#2C2C2C"/>
+            <ImageButton Grid.Column="2"
+                         Source="user_icon.png"
+                         WidthRequest="44" HeightRequest="44"
+                         BackgroundColor="#B0E0E6"
+                         CornerRadius="22"
+                         Command="{Binding IrAPerfilCommand}"/>
+        </Grid>
+
+        <!-- ── Contenido principal ── -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16" Spacing="20">
+
+                <!-- Mascota (círculo placeholder) -->
+                <Ellipse Fill="#B0E0E6"
+                         WidthRequest="280" HeightRequest="280"
+                         HorizontalOptions="Center"/>
+
+                <!-- Puntos de cuidado -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="20"
+                       Padding="16,8"
+                       HorizontalOptions="Center"
+                       HasShadow="True">
+                    <Label FontSize="14" TextColor="#2C2C2C">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Puntos de cuidado: " FontAttributes="Bold"/>
+                                <Span Text="{Binding PuntosDesCuidado}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Frame>
+
+                <!-- Botones de interacción con la mascota -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="12">
+                    <Ellipse Fill="#81D4FA" WidthRequest="45" HeightRequest="45">
+                        <Ellipse.GestureRecognizers>
+                            <TapGestureRecognizer/>
+                        </Ellipse.GestureRecognizers>
+                    </Ellipse>
+                    <Ellipse Fill="#A5D6A7" WidthRequest="45" HeightRequest="45">
+                        <Ellipse.GestureRecognizers>
+                            <TapGestureRecognizer/>
+                        </Ellipse.GestureRecognizers>
+                    </Ellipse>
+                    <Ellipse Fill="#FFCC80" WidthRequest="45" HeightRequest="45">
+                        <Ellipse.GestureRecognizers>
+                            <TapGestureRecognizer/>
+                        </Ellipse.GestureRecognizers>
+                    </Ellipse>
+                    <Ellipse Fill="#CE93D8" WidthRequest="45" HeightRequest="45">
+                        <Ellipse.GestureRecognizers>
+                            <TapGestureRecognizer/>
+                        </Ellipse.GestureRecognizers>
+                    </Ellipse>
+                    <Ellipse Fill="#EF9A9A" WidthRequest="45" HeightRequest="45">
+                        <Ellipse.GestureRecognizers>
+                            <TapGestureRecognizer/>
+                        </Ellipse.GestureRecognizers>
+                    </Ellipse>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
 </ContentPage>

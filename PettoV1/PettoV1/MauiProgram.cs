@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PettoV1.Pages;
 using PettoV1.Views;
 using SharedResources.Data;
 

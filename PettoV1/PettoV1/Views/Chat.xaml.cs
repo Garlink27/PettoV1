@@ -1,9 +1,22 @@
-namespace PettoV1.Pages;
+using PettoV1.ViewModels;
 
-public partial class Chat : ContentPage
+namespace PettoV1.Views
 {
-	public Chat()
-	{
-		InitializeComponent();
-	}
+    public partial class Chat : ContentPage
+    {
+        private readonly ChatViewModel _vm;
+
+        public Chat(ChatViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
+            BindingContext = vm;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _vm.InicializarAsync();
+        }
+    }
 }

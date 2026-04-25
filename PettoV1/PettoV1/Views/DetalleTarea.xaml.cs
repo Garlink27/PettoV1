@@ -1,9 +1,13 @@
-namespace PettoV1.Pages;
+using PettoV1.ViewModels;
 
-public partial class DetalleTarea : ContentPage
+namespace PettoV1.Views
 {
-	public DetalleTarea()
-	{
-		InitializeComponent();
-	}
+    public partial class DetalleTarea : ContentPage
+    {
+        public DetalleTarea(DetalleTareaViewModel vm)
+        {
+            InitializeComponent();
+            BindingContext = vm;
+        }
+    }
 }

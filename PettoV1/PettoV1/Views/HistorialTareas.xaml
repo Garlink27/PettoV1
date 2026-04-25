@@ -1,12 +1,104 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PettoV1.Pages.HistorialTareas"
-             Title="HistorialTareas">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:vm="clr-namespace:PettoV1.ViewModels"
+             xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
+             x:Class="PettoV1.Views.HistorialTareas"
+             x:DataType="vm:HistorialTareasViewModel"
+             BackgroundColor="#D5F9FF"
+             Title="Tu Archivo">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
+
+        <!-- ── Header ── -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
+              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+            <ImageButton Grid.Column="0" Source="menu_icon.png"
+                         WidthRequest="36" HeightRequest="36"
+                         BackgroundColor="Transparent"
+                         Command="{Binding AbrirMenuCommand}"/>
+            <Label Grid.Column="1"
+                   Text="{Binding FechaHora}"
+                   HorizontalOptions="Center" VerticalOptions="Center"
+                   FontSize="13" TextColor="#2C2C2C"/>
+            <ImageButton Grid.Column="2" Source="user_icon.png"
+                         WidthRequest="44" HeightRequest="44"
+                         BackgroundColor="#B0E0E6" CornerRadius="22"
+                         Command="{Binding IrAPerfilCommand}"/>
+        </Grid>
+
+        <!-- ── Contenido ── -->
+        <VerticalStackLayout Grid.Row="1" Spacing="0">
+
+            <!-- Barra de herramientas: calendario + filtro -->
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Padding="16,12" BackgroundColor="#D5F9FF">
+                <ImageButton Grid.Column="0"
+                             Source="calendar_icon.png"
+                             WidthRequest="36" HeightRequest="36"
+                             BackgroundColor="Transparent"
+                             Command="{Binding ToggleCalendarioCommand}"/>
+                <Label Grid.Column="1"
+                       Text="Tu Archivo"
+                       FontSize="20" FontAttributes="Bold"
+                       TextColor="#2C2C2C"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+                <ImageButton Grid.Column="2"
+                             Source="filter_icon.png"
+                             WidthRequest="36" HeightRequest="36"
+                             BackgroundColor="Transparent"
+                             Command="{Binding FiltrarPorFechaCommand}"/>
+            </Grid>
+
+            <!-- Selector de fecha (visible cuando MostrarCalendario = true) -->
+            <DatePicker Date="{Binding FechaFiltro}"
+                        Format="dd/MM/yyyy"
+                        BackgroundColor="White"
+                        TextColor="#2C2C2C"
+                        Margin="16,0,16,8"
+                        IsVisible="{Binding MostrarCalendario}"/>
+
+            <!-- Notas / historial -->
+            <ScrollView>
+                <VerticalStackLayout Padding="16" Spacing="12">
+
+                    <CollectionView ItemsSource="{Binding Historial}"
+                                    EmptyView="No hay tareas completadas">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:TareaModel">
+                                <Frame BackgroundColor="White"
+                                       CornerRadius="12"
+                                       Padding="16"
+                                       Margin="0,4"
+                                       HasShadow="False">
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="{Binding Titulo}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="#2C2C2C"/>
+                                        <Label Text="{Binding Descripcion}"
+                                               FontSize="13"
+                                               TextColor="#607D8B"
+                                               MaxLines="3"
+                                               LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding FechaLimite, StringFormat='Completada: {0:dd/MM/yyyy}'}"
+                                               FontSize="12"
+                                               TextColor="#9E9E9E"/>
+                                        <Label Text="{Binding Categoria.Nombre}"
+                                               FontSize="12"
+                                               TextColor="#26C6DA"
+                                               FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>

@@ -1,12 +1,101 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PettoV1.Pages.Chat"
+             xmlns:vm="clr-namespace:PettoV1.ViewModels"
+             xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
+             x:Class="PettoV1.Views.Chat"
+             x:DataType="vm:ChatViewModel"
+             BackgroundColor="#D5F9FF"
              Title="Chat">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+        <!-- ── Header ── -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
+              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+            <ImageButton Grid.Column="0" Source="menu_icon.png"
+                         WidthRequest="36" HeightRequest="36"
+                         BackgroundColor="Transparent"
+                         Command="{Binding AbrirMenuCommand}"/> 
+            <Label Grid.Column="1"
+                   Text="{Binding FechaHora}"
+                   HorizontalOptions="Center" VerticalOptions="Center"
+                   FontSize="13" TextColor="#2C2C2C"/>
+            <ImageButton Grid.Column="2" Source="user_icon.png"
+                         WidthRequest="44" HeightRequest="44"
+                         BackgroundColor="#B0E0E6" CornerRadius="22"
+                         Command="{Binding IrAPerfilCommand}"/>
+        </Grid>
+
+        <!-- ── Lista de mensajes ── -->
+        <CollectionView Grid.Row="1"
+                        x:Name="MensajesCollection"
+                        ItemsSource="{Binding Mensajes}"
+                        Margin="0,4">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:MensajeModel">
+                    <Grid Padding="12,6">
+                        <!-- Mensaje del usuario (derecha) -->
+                        <Frame BackgroundColor="#2C2C2C"
+                               CornerRadius="16"
+                               Padding="12,8"
+                               HorizontalOptions="End"
+                               MaximumWidthRequest="280"
+                               HasShadow="False"
+                               IsVisible="{Binding EsRespuestaIA, Converter={StaticResource InverseBoolConverter}}">
+                            <Label Text="{Binding Contenido}"
+                                   TextColor="White"
+                                   FontSize="14"/>
+                        </Frame>
+                        <!-- Respuesta IA (izquierda) -->
+                        <Frame BackgroundColor="White"
+                               CornerRadius="16"
+                               Padding="12,8"
+                               HorizontalOptions="Start"
+                               MaximumWidthRequest="280"
+                               HasShadow="False"
+                               IsVisible="{Binding EsRespuestaIA}">
+                            <Label Text="{Binding Contenido}"
+                                   TextColor="#2C2C2C"
+                                   FontSize="14"/>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- ── Área de entrada de texto ── -->
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*,Auto"
+              Padding="12,8"
+              BackgroundColor="White">
+            <Entry Grid.Column="0"
+                   Placeholder="Escribe un mensaje..."
+                   Text="{Binding MensajeActual}"
+                   PlaceholderColor="#B3B3B3"
+                   TextColor="#1E1E1E"
+                   BackgroundColor="White"
+                   ReturnCommand="{Binding EnviarMensajeCommand}"/>
+            <Button Grid.Column="1"
+                    Text="Enviar"
+                    BackgroundColor="#26C6DA"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Padding="12,0"
+                    IsEnabled="{Binding PuedeEnviar}"
+                    Command="{Binding EnviarMensajeCommand}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding PuedeEnviar}" Value="False">
+                        <Setter Property="BackgroundColor" Value="#B0BEC5"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding PuedeEnviar}" Value="True">
+                        <Setter Property="BackgroundColor" Value="#26C6DA"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
+
+    </Grid>
 </ContentPage>

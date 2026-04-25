@@ -1,9 +1,13 @@
-namespace PettoV1.Views;
+using PettoV1.ViewModels;
 
-public partial class Login : ContentPage
+namespace PettoV1.Views
 {
-	public Login()
-	{
-		InitializeComponent();
-	}
+    public partial class Login : ContentPage
+    {
+        public Login(LoginViewModel vm)
+        {
+            InitializeComponent();
+            BindingContext = vm;
+        }
+    }
 }

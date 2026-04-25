@@ -1,12 +1,213 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.Registro"
+             x:DataType="vm:RegistroViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#D5F9FF"
              Title="Registro">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Logo / Avatar -->
+            <Ellipse Fill="#B0E0E6"
+                     WidthRequest="130"
+                     HeightRequest="130"
+                     HorizontalOptions="Center"
+                     Margin="0,50,0,20"/>
+
+            <!-- Tarjeta formulario -->
+            <Frame BackgroundColor="#D5F9FF"
+                   BorderColor="#D5F9FF"
+                   CornerRadius="12"
+                   Padding="24"
+                   Margin="24,0,24,24"
+                   HasShadow="False">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="Crear cuenta"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#2C2C2C"
+                           Margin="0,0,0,8"/>
+
+                    <!-- ── Correo ── -->
+                    <Label Text="Correo" FontSize="16" TextColor="#1E1E1E"/>
+                    <Entry Placeholder="ejemplo@correo.com"
+                           Text="{Binding Email}"
+                           Keyboard="Email"
+                           TextColor="#1E1E1E"
+                           PlaceholderColor="#B3B3B3"
+                           BackgroundColor="White">
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsEmailValid}" Value="False">
+                                <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsEmailValid}" Value="True">
+                                <Setter Property="BackgroundColor" Value="White"/>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="Ingresa un correo electrónico válido"
+                           TextColor="Red" FontSize="12" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsEmailValid}" Value="False">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsEmailValid}" Value="True">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <!-- ── Nombre de usuario ── -->
+                    <Label Text="Nombre de usuario" FontSize="16" TextColor="#1E1E1E"/>
+                    <Entry Placeholder="Mínimo 3 caracteres"
+                           Text="{Binding NombreUsuario}"
+                           TextColor="#1E1E1E"
+                           PlaceholderColor="#B3B3B3"
+                           BackgroundColor="White">
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsUsernameValid}" Value="False">
+                                <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsUsernameValid}" Value="True">
+                                <Setter Property="BackgroundColor" Value="White"/>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="El nombre debe tener al menos 3 caracteres"
+                           TextColor="Red" FontSize="12" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsUsernameValid}" Value="False">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsUsernameValid}" Value="True">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <!-- ── Contraseña ── -->
+                    <Label Text="Contraseña" FontSize="16" TextColor="#1E1E1E"/>
+                    <Entry Placeholder="Mínimo 6 caracteres con un número"
+                           Text="{Binding Contrasena}"
+                           IsPassword="True"
+                           TextColor="#1E1E1E"
+                           PlaceholderColor="#B3B3B3"
+                           BackgroundColor="White">
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsPasswordValid}" Value="False">
+                                <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsPasswordValid}" Value="True">
+                                <Setter Property="BackgroundColor" Value="White"/>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="Mínimo 6 caracteres y al menos un número"
+                           TextColor="Red" FontSize="12" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsPasswordValid}" Value="False">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsPasswordValid}" Value="True">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <!-- ── Confirmar contraseña ── -->
+                    <Label Text="Confirmar contraseña" FontSize="16" TextColor="#1E1E1E"/>
+                    <Entry Placeholder="Repite tu contraseña"
+                           Text="{Binding ConfirmarContrasena}"
+                           IsPassword="True"
+                           TextColor="#1E1E1E"
+                           PlaceholderColor="#B3B3B3"
+                           BackgroundColor="White">
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsConfirmPasswordValid}" Value="False">
+                                <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Entry"
+                                         Binding="{Binding IsConfirmPasswordValid}" Value="True">
+                                <Setter Property="BackgroundColor" Value="White"/>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="Las contraseñas no coinciden"
+                           TextColor="Red" FontSize="12" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsConfirmPasswordValid}" Value="False">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsConfirmPasswordValid}" Value="True">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <!-- ── Botón Registrarse ── -->
+                    <Button Text="Registrarse"
+                            BackgroundColor="#2C2C2C"
+                            TextColor="#F5F5F5"
+                            CornerRadius="8"
+                            FontSize="16"
+                            HeightRequest="50"
+                            IsEnabled="{Binding IsFormValid}"
+                            Command="{Binding RegistrarseCommand}"
+                            Margin="0,8,0,0">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsFormValid}" Value="False">
+                                <Setter Property="BackgroundColor" Value="#9E9E9E"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsFormValid}" Value="True">
+                                <Setter Property="BackgroundColor" Value="#2C2C2C"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <!-- Enlace Ingresar -->
+                    <Label HorizontalOptions="Center" Margin="0,4,0,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="¿Ya tienes cuenta? " TextColor="#1E1E1E" FontSize="14"/>
+                                <Span Text="Ingresar"
+                                      TextColor="#0288D1"
+                                      FontSize="14"
+                                      TextDecorations="Underline">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding IrALoginCommand}"/>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

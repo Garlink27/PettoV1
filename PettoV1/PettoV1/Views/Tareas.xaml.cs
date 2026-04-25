@@ -1,9 +1,22 @@
-namespace PettoV1.Pages;
+using PettoV1.ViewModels;
 
-public partial class Tareas : ContentPage
+namespace PettoV1.Views
 {
-	public Tareas()
-	{
-		InitializeComponent();
-	}
+    public partial class Tareas : ContentPage
+    {
+        private readonly TareasViewModel _vm;
+
+        public Tareas(TareasViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
+            BindingContext = vm;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _vm.InicializarAsync();
+        }
+    }
 }

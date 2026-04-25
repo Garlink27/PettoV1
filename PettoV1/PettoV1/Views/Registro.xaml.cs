@@ -1,9 +1,13 @@
-namespace PettoV1.Views;
+using PettoV1.ViewModels;
 
-public partial class Registro : ContentPage
+namespace PettoV1.Views
 {
-	public Registro()
-	{
-		InitializeComponent();
-	}
+    public partial class Registro : ContentPage
+    {
+        public Registro(RegistroViewModel vm)
+        {
+            InitializeComponent();
+            BindingContext = vm;
+        }
+    }
 }

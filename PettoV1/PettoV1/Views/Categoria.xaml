@@ -1,12 +1,149 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PettoV1.Pages.Categoria"
-             Title="Categoria">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:vm="clr-namespace:PettoV1.ViewModels"
+             xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
+             x:Class="PettoV1.Views.Categoria"
+             x:DataType="vm:CategoriaViewModel"
+             BackgroundColor="#D5F9FF"
+             Title="Categoría">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
+
+        <!-- ── Header con botón regresar ── -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
+              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+            <ImageButton Grid.Column="0" Source="arrow_left_icon.png"
+                         WidthRequest="40" HeightRequest="40"
+                         BackgroundColor="Transparent"
+                         Command="{Binding RegresarCommand}"/>
+            <Label Grid.Column="1"
+                   Text="{Binding FechaHora}"
+                   HorizontalOptions="Center" VerticalOptions="Center"
+                   FontSize="13" TextColor="#2C2C2C"/>
+            <ImageButton Grid.Column="2" Source="user_icon.png"
+                         WidthRequest="44" HeightRequest="44"
+                         BackgroundColor="#B0E0E6" CornerRadius="22"/>
+        </Grid>
+
+        <!-- ── Contenido ── -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16" Spacing="16">
+
+                <!-- Título de categoría + menú opciones -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding Categoria.Nombre}"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="#2C2C2C"
+                           VerticalOptions="Center"/>
+                    <ImageButton Grid.Column="1"
+                                 Source="more_icon.png"
+                                 WidthRequest="32" HeightRequest="32"
+                                 BackgroundColor="Transparent"/>
+                </Grid>
+
+                <!-- Tareas incompletas -->
+                <Label Text="Pendientes"
+                       FontSize="16" FontAttributes="Bold"
+                       TextColor="#2C2C2C"/>
+
+                <CollectionView ItemsSource="{Binding TareasIncompletas}"
+                                EmptyView="Sin tareas pendientes">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TareaModel">
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  Padding="0,6">
+                                <BoxView Grid.Column="0"
+                                         WidthRequest="32" HeightRequest="32"
+                                         BackgroundColor="White"
+                                         CornerRadius="4">
+                                    <BoxView.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}},
+                                                              Path=ToggleCompletadaCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </BoxView.GestureRecognizers>
+                                </BoxView>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Titulo}"
+                                       FontSize="15" TextColor="#2C2C2C"
+                                       VerticalOptions="Center"
+                                       Margin="8,0">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}},
+                                                              Path=VerDetalleTareaCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <BoxView Grid.ColumnSpan="3"
+                                         HeightRequest="1" Color="#B0E0E6"
+                                         VerticalOptions="End"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Tareas completadas -->
+                <Label Text="Completadas"
+                       FontSize="16" FontAttributes="Bold"
+                       TextColor="#2C2C2C"
+                       Margin="0,8,0,0"/>
+
+                <CollectionView ItemsSource="{Binding TareasCompletadas}"
+                                EmptyView="Sin tareas completadas">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TareaModel">
+                            <Grid ColumnDefinitions="Auto,*"
+                                  Padding="0,6">
+                                <BoxView Grid.Column="0"
+                                         WidthRequest="32" HeightRequest="32"
+                                         BackgroundColor="#A5D6A7"
+                                         CornerRadius="4">
+                                    <BoxView.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}},
+                                                              Path=ToggleCompletadaCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </BoxView.GestureRecognizers>
+                                </BoxView>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Titulo}"
+                                       FontSize="15"
+                                       TextColor="#9E9E9E"
+                                       TextDecorations="Strikethrough"
+                                       VerticalOptions="Center"
+                                       Margin="8,0"/>
+                                <BoxView Grid.ColumnSpan="2"
+                                         HeightRequest="1" Color="#B0E0E6"
+                                         VerticalOptions="End"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Botón flotante Agregar tarea -->
+        <Ellipse Grid.Row="1"
+                 Fill="#2C2C2C"
+                 WidthRequest="60" HeightRequest="60"
+                 HorizontalOptions="End"
+                 VerticalOptions="End"
+                 Margin="0,0,20,20">
+            <Ellipse.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AgregarTareaCommand}"/>
+            </Ellipse.GestureRecognizers>
+        </Ellipse>
+        <Label Grid.Row="1"
+               Text="+"
+               FontSize="32" TextColor="White"
+               HorizontalOptions="End"
+               VerticalOptions="End"
+               Margin="0,0,32,24"
+               InputTransparent="True"/>
+
+    </Grid>
 </ContentPage>

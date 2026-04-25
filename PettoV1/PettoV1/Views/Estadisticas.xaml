@@ -1,12 +1,122 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PettoV1.Pages.Estadisticas"
-             Title="Estadisticas">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:vm="clr-namespace:PettoV1.ViewModels"
+             x:Class="PettoV1.Views.Estadisticas"
+             x:DataType="vm:EstadisticasViewModel"
+             BackgroundColor="#D5F9FF"
+             Title="Estadísticas">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
+
+        <!-- ── Header ── -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
+              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+            <ImageButton Grid.Column="0" Source="menu_icon.png"
+                         WidthRequest="36" HeightRequest="36"
+                         BackgroundColor="Transparent"
+                         Command="{Binding AbrirMenuCommand}"/>
+            <Label Grid.Column="1"
+                   Text="{Binding FechaHora}"
+                   HorizontalOptions="Center" VerticalOptions="Center"
+                   FontSize="13" TextColor="#2C2C2C"/>
+            <ImageButton Grid.Column="2" Source="user_icon.png"
+                         WidthRequest="44" HeightRequest="44"
+                         BackgroundColor="#B0E0E6" CornerRadius="22"
+                         Command="{Binding IrAPerfilCommand}"/>
+        </Grid>
+
+        <!-- ── Contenido ── -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <Label Text="Estadísticas"
+                       FontSize="24" FontAttributes="Bold"
+                       TextColor="#2C2C2C"
+                       HorizontalOptions="Center"/>
+
+                <!-- Gráfica placeholder -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="16"
+                       Padding="16"
+                       HasShadow="True"
+                       HeightRequest="220">
+                    <VerticalStackLayout VerticalOptions="Center" Spacing="8">
+                        <Label Text="📊"
+                               FontSize="48"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Gráfica de tareas"
+                               FontSize="16" TextColor="#607D8B"
+                               HorizontalOptions="Center"/>
+                        <Button Text="Mostrar estadísticas"
+                                BackgroundColor="#26C6DA"
+                                TextColor="White"
+                                CornerRadius="8"
+                                HorizontalOptions="Center"
+                                Command="{Binding ActualizarEstadisticasCommand}"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Tarjetas de resumen -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12">
+
+                    <Frame Grid.Column="0" BackgroundColor="White"
+                           CornerRadius="14" Padding="16" HasShadow="False">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Total" FontSize="13" TextColor="#607D8B"/>
+                            <Label Text="{Binding TotalTareas}"
+                                   FontSize="32" FontAttributes="Bold"
+                                   TextColor="#2C2C2C"/>
+                            <Label Text="tareas" FontSize="12" TextColor="#9E9E9E"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Column="1" BackgroundColor="#E0F7FA"
+                           CornerRadius="14" Padding="16" HasShadow="False">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Completadas" FontSize="13" TextColor="#00838F"/>
+                            <Label Text="{Binding TareasCompletadas}"
+                                   FontSize="32" FontAttributes="Bold"
+                                   TextColor="#00838F"/>
+                            <Label Text="tareas" FontSize="12" TextColor="#4DD0E1"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="#FFF3E0"
+                           CornerRadius="14" Padding="16" HasShadow="False">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Pendientes" FontSize="13" TextColor="#E65100"/>
+                            <Label Text="{Binding TareasIncompletas}"
+                                   FontSize="32" FontAttributes="Bold"
+                                   TextColor="#E65100"/>
+                            <Label Text="tareas" FontSize="12" TextColor="#FFB74D"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="#F3E5F5"
+                           CornerRadius="14" Padding="16" HasShadow="False">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Progreso" FontSize="13" TextColor="#6A1B9A"/>
+                            <Label Text="{Binding PorcentajeCompletadas, StringFormat='{0}%'}"
+                                   FontSize="32" FontAttributes="Bold"
+                                   TextColor="#6A1B9A"/>
+                            <Label Text="completado" FontSize="12" TextColor="#BA68C8"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </Grid>
+
+                <!-- Calendario para filtrar -->
+                <Label Text="Selecciona una fecha"
+                       FontSize="16" FontAttributes="Bold"
+                       TextColor="#2C2C2C"/>
+                <DatePicker Date="{Binding FechaSeleccionada}"
+                            Format="dd/MM/yyyy"
+                            TextColor="#2C2C2C"
+                            BackgroundColor="White"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
 </ContentPage>

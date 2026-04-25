@@ -57,7 +57,7 @@ namespace PettoV1.ViewModels
         {
             // Navegar a DetalleTarea en modo creación
             await Shell.Current.GoToAsync(
-                nameof(DetalleTareaPage),
+                nameof(DetalleTarea),
                 new Dictionary<string, object>
                 {
                     ["Tarea"] = new TareaModel { CategoriaId = Categoria.Id, Categoria = Categoria }
@@ -68,7 +68,7 @@ namespace PettoV1.ViewModels
         public async Task VerDetalleTarea(TareaModel tarea)
         {
             await Shell.Current.GoToAsync(
-                nameof(DetalleTareaPage),
+                nameof(DetalleTarea),
                 new Dictionary<string, object> { ["Tarea"] = tarea });
         }
 

@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using PettoV1.Views;
 using SharedResources.Data;
 using SharedResources.Models;
 using System.Text.RegularExpressions;
@@ -11,8 +10,6 @@ namespace PettoV1.ViewModels
     public partial class RegistroViewModel : ObservableObject
     {
         private readonly DataContext _dataContext;
-
-        // ──────────────── Propiedades observables ────────────────
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsEmailValid))]
@@ -35,24 +32,18 @@ namespace PettoV1.ViewModels
         [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _confirmarContrasena = string.Empty;
 
-        // ──────────────── Validaciones ────────────────
-
-        /// <summary>Email válido con formato correcto.</summary>
         public bool IsEmailValid =>
             !string.IsNullOrWhiteSpace(Email) &&
             Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
 
-        /// <summary>Nombre de usuario requerido, mínimo 3 caracteres.</summary>
         public bool IsUsernameValid =>
             !string.IsNullOrWhiteSpace(NombreUsuario) && NombreUsuario.Length >= 3;
 
-        /// <summary>Contraseña de mínimo 6 caracteres con al menos un número.</summary>
         public bool IsPasswordValid =>
             !string.IsNullOrWhiteSpace(Contrasena) &&
             Contrasena.Length >= 6 &&
             Regex.IsMatch(Contrasena, @"\d");
 
-        /// <summary>Confirmar contraseña debe coincidir con contraseña.</summary>
         public bool IsConfirmPasswordValid =>
             !string.IsNullOrWhiteSpace(ConfirmarContrasena) &&
             ConfirmarContrasena == Contrasena;
@@ -60,14 +51,10 @@ namespace PettoV1.ViewModels
         public bool IsFormValid =>
             IsEmailValid && IsUsernameValid && IsPasswordValid && IsConfirmPasswordValid;
 
-        // ──────────────── Constructor ────────────────
-
         public RegistroViewModel(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
-
-        // ──────────────── Comandos ────────────────
 
         [RelayCommand]
         public async Task Registrarse()
@@ -86,7 +73,7 @@ namespace PettoV1.ViewModels
             {
                 Email = Email,
                 NombreUsuario = NombreUsuario,
-                Contrasena = Contrasena   // En producción: hashear con BCrypt
+                Contrasena = Contrasena
             };
 
             await _dataContext.Usuarios.AddAsync(nuevoUsuario);

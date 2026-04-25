@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PettoV1.Pages;
 using PettoV1.Views;
 
 namespace PettoV1.ViewModels
@@ -31,7 +32,7 @@ namespace PettoV1.ViewModels
         [RelayCommand]
         public async Task IrAPerfil()
         {
-            await Shell.Current.GoToAsync(nameof(PerfilPage));
+            await Shell.Current.GoToAsync(nameof(Perfil));
         }
 
         [RelayCommand]

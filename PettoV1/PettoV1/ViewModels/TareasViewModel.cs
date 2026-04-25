@@ -1,107 +1,78 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using PettoV1.Pages;
 using PettoV1.Views;
 using SharedResources.Data;
 using SharedResources.Models;
-using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 
 namespace PettoV1.ViewModels
 {
-    public partial class RegistroViewModel : ObservableObject
+    public partial class TareasViewModel : ObservableObject
     {
         private readonly DataContext _dataContext;
 
-        // ──────────────── Propiedades observables ────────────────
+        [ObservableProperty]
+        private ObservableCollection<TareaModel> _tareasProximas = new();
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsEmailValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
-        private string _email = string.Empty;
+        private ObservableCollection<CategoriaModel> _categorias = new();
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsUsernameValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
-        private string _nombreUsuario = string.Empty;
+        private string _fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsPasswordValid))]
-        [NotifyPropertyChangedFor(nameof(IsConfirmPasswordValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
-        private string _contrasena = string.Empty;
-
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsConfirmPasswordValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
-        private string _confirmarContrasena = string.Empty;
-
-        // ──────────────── Validaciones ────────────────
-
-        /// <summary>Email válido con formato correcto.</summary>
-        public bool IsEmailValid =>
-            !string.IsNullOrWhiteSpace(Email) &&
-            Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-
-        /// <summary>Nombre de usuario requerido, mínimo 3 caracteres.</summary>
-        public bool IsUsernameValid =>
-            !string.IsNullOrWhiteSpace(NombreUsuario) && NombreUsuario.Length >= 3;
-
-        /// <summary>Contraseña de mínimo 6 caracteres con al menos un número.</summary>
-        public bool IsPasswordValid =>
-            !string.IsNullOrWhiteSpace(Contrasena) &&
-            Contrasena.Length >= 6 &&
-            Regex.IsMatch(Contrasena, @"\d");
-
-        /// <summary>Confirmar contraseña debe coincidir con contraseña.</summary>
-        public bool IsConfirmPasswordValid =>
-            !string.IsNullOrWhiteSpace(ConfirmarContrasena) &&
-            ConfirmarContrasena == Contrasena;
-
-        public bool IsFormValid =>
-            IsEmailValid && IsUsernameValid && IsPasswordValid && IsConfirmPasswordValid;
-
-        // ──────────────── Constructor ────────────────
-
-        public RegistroViewModel(DataContext dataContext)
+        public TareasViewModel(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
-        // ──────────────── Comandos ────────────────
-
-        [RelayCommand]
-        public async Task Registrarse()
+        public async Task InicializarAsync()
         {
-            bool emailExiste = await _dataContext.Usuarios
-                .AnyAsync(u => u.Email == Email);
+            await CargarTareasAsync();
+            await CargarCategoriasAsync();
+        }
 
-            if (emailExiste)
-            {
-                await Shell.Current.DisplayAlert(
-                    "Error", "Ya existe una cuenta con ese correo.", "OK");
-                return;
-            }
+        private async Task CargarTareasAsync()
+        {
+            TareasProximas.Clear();
+            var tareas = await _dataContext.Tareas
+                .AsNoTracking()
+                .Where(t => !t.Completada && t.FechaLimite >= DateTime.Today)
+                .OrderBy(t => t.FechaLimite)
+                .Take(10)
+                .ToListAsync();
+            foreach (var t in tareas) TareasProximas.Add(t);
+        }
 
-            var nuevoUsuario = new UsuarioModel
-            {
-                Email = Email,
-                NombreUsuario = NombreUsuario,
-                Contrasena = Contrasena   // En producción: hashear con BCrypt
-            };
-
-            await _dataContext.Usuarios.AddAsync(nuevoUsuario);
-            await _dataContext.SaveChangesAsync();
-
-            await Shell.Current.DisplayAlert(
-                "Éxito", "Cuenta creada exitosamente.", "OK");
-            await Shell.Current.GoToAsync("..");
+        private async Task CargarCategoriasAsync()
+        {
+            Categorias.Clear();
+            var cats = await _dataContext.Categorias
+                .AsNoTracking()
+                .Include(c => c.Tareas)
+                .ToListAsync();
+            foreach (var c in cats) Categorias.Add(c);
         }
 
         [RelayCommand]
-        public async Task IrALogin()
+        public async Task VerCategoria(CategoriaModel categoria)
         {
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync(
+                nameof(Categoria),
+                new Dictionary<string, object> { ["Categoria"] = categoria });
+        }
+
+        [RelayCommand]
+        public async Task AbrirMenu()
+        {
+            Shell.Current.FlyoutIsPresented = true;
+        }
+
+        [RelayCommand]
+        public async Task IrAPerfil()
+        {
+            await Shell.Current.GoToAsync(nameof(Perfil));
         }
     }
 }
-

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using PettoV1.Pages;
 using PettoV1.Views;
 using SharedResources.Data;
 using System.Text.RegularExpressions;
@@ -23,7 +24,6 @@ namespace PettoV1.ViewModels
         [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _contrasena = string.Empty;
 
-        // ──────────────── Validaciones ────────────────
 
         /// <summary>Correo válido si tiene formato email.</summary>
         public bool IsEmailValid =>
@@ -37,14 +37,12 @@ namespace PettoV1.ViewModels
         /// <summary>Formulario válido cuando email y contraseña son válidos.</summary>
         public bool IsFormValid => IsEmailValid && IsPasswordValid;
 
-        // ──────────────── Constructor ────────────────
 
         public LoginViewModel(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
-        // ──────────────── Comandos ────────────────
 
         [RelayCommand]
         public async Task IniciarSesion()
@@ -66,7 +64,7 @@ namespace PettoV1.ViewModels
         [RelayCommand]
         public async Task IrARegistro()
         {
-            await Shell.Current.GoToAsync(nameof(RegistroPage));
+            await Shell.Current.GoToAsync(nameof(Registro));
         }
     }
 }

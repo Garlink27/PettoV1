@@ -3,8 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using SharedResources.Data;
 using SharedResources.Models;
-using static Android.Icu.Text.CaseMap;
-using static Android.Util.EventLogTags;
+
 
 namespace PettoV1.ViewModels
 {

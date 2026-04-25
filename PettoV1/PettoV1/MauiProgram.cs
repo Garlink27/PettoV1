@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using PettoV1.Pages;
+using PettoV1.Views;
+using SharedResources.Data;
 
 namespace PettoV1
 {
@@ -15,9 +19,22 @@ namespace PettoV1
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "petto.db");
+            builder.Services.AddDbContext<DataContext>(options => options.UseSqlite($"Filename={dbPath}"));
+
+
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
+
+            var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dataBase = scope.ServiceProvider.GetRequiredService<DataContext>();
+                dataBase.Database.Migrate();
+            }
 
             return builder.Build();
         }

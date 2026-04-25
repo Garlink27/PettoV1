@@ -6,6 +6,6 @@ namespace SharedResources.Models
         public string Nombre { get; set; } = string.Empty;
         public int PuntosDesCuidado { get; set; }
         public int UsuarioId { get; set; }
-        public UsuarioModel Usuario { get; set; } = new();
+        public UsuarioModel? Usuario { get; set; }
     }
 }

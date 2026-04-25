@@ -56,6 +56,6 @@ namespace PettoV1.ViewModels
 
         [RelayCommand]
         public async Task IrAConfiguracion() =>
-            await Shell.Current.GoToAsync("..Configuracion");
+            await Shell.Current.GoToAsync("//Configuracion");
     }
 }

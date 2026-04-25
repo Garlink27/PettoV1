@@ -10,11 +10,8 @@ namespace PettoV1.ViewModels
     {
         private readonly DataContext _dataContext;
 
-        [ObservableProperty]
-        private string _email = string.Empty;
-
-        [ObservableProperty]
-        private string _contrasena = string.Empty;
+        [ObservableProperty] private string _email = string.Empty;
+        [ObservableProperty] private string _contrasena = string.Empty;
 
         public bool IsEmailValid =>
             !string.IsNullOrWhiteSpace(Email) &&
@@ -45,6 +42,14 @@ namespace PettoV1.ViewModels
         [RelayCommand]
         public async Task IniciarSesion()
         {
+            if (!IsFormValid)
+            {
+                await Shell.Current.DisplayAlert(
+                    "Formulario incompleto",
+                    "Ingresa un correo válido y contraseña de al menos 6 caracteres.", "OK");
+                return;
+            }
+
             var usuario = await _dataContext.Usuarios
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == Email && u.Contrasena == Contrasena);
@@ -55,13 +60,16 @@ namespace PettoV1.ViewModels
                 return;
             }
 
+            // Guardar sesión con Preferences
+            Preferences.Set("UsuarioId", usuario.Id);
+            Preferences.Set("NombreUsuario", usuario.NombreUsuario);
+            Preferences.Set("Email", usuario.Email);
+
             await Shell.Current.GoToAsync("//MainPage");
         }
 
         [RelayCommand]
-        public async Task IrARegistro()
-        {
+        public async Task IrARegistro() =>
             await Shell.Current.GoToAsync(nameof(Views.Registro));
-        }
     }
 }

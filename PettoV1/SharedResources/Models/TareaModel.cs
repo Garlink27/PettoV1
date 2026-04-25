@@ -8,6 +8,6 @@ namespace SharedResources.Models
         public DateTime FechaLimite { get; set; }
         public bool Completada { get; set; }
         public int CategoriaId { get; set; }
-        public CategoriaModel Categoria { get; set; } = new();
+        public CategoriaModel? Categoria { get; set; }
     }
 }

@@ -15,7 +15,6 @@ namespace PettoV1.ViewModels
         [ObservableProperty] private string _confirmarNuevaContrasena = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsNuevaContrasenaValida))]
         [NotifyPropertyChangedFor(nameof(IsFormCambioValido))]
         private bool _isContrasenaActualValida = true;
 
@@ -42,7 +41,9 @@ namespace PettoV1.ViewModels
         [RelayCommand]
         public async Task CambiarContrasena()
         {
-            var usuario = await _dataContext.Usuarios.FirstOrDefaultAsync();
+            int usuarioId = Preferences.Get("UsuarioId", 0);
+
+            var usuario = await _dataContext.Usuarios.FindAsync(usuarioId);
             if (usuario is null) return;
 
             if (usuario.Contrasena != ContrasenaActual)
@@ -78,7 +79,13 @@ namespace PettoV1.ViewModels
             string resp = await Shell.Current.DisplayActionSheet(
                 "¿Cerrar sesión?", "Cancelar", "Cerrar sesión");
             if (resp != "Cerrar sesión") return;
-            await Shell.Current.GoToAsync("//LoginPage");
+
+            // Limpiar sesión
+            Preferences.Remove("UsuarioId");
+            Preferences.Remove("NombreUsuario");
+            Preferences.Remove("Email");
+
+            await Shell.Current.GoToAsync("//Login");
         }
 
         [RelayCommand]

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using SharedResources.Data;
 using SharedResources.Models;
-
+using System.Collections.ObjectModel;
 
 namespace PettoV1.ViewModels
 {
@@ -21,19 +21,23 @@ namespace PettoV1.ViewModels
         private string _descripcion = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private DateTime _fechaLimite = DateTime.Today.AddDays(1);
 
         [ObservableProperty]
         private bool _completada;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private int _categoriaId;
+
+        [ObservableProperty]
+        private ObservableCollection<CategoriaModel> _categorias = new();
 
         private TareaModel? _tareaOriginal;
 
         public bool IsTituloValid => !string.IsNullOrWhiteSpace(Titulo);
-        public bool IsFormValid => IsTituloValid;
+        // El formulario es válido si tiene título Y una categoría seleccionada
+        public bool IsFormValid => IsTituloValid && CategoriaId > 0;
         public bool EsModoEdicion => _tareaOriginal?.Id > 0;
 
         public TareaModel Tarea
@@ -53,39 +57,68 @@ namespace PettoV1.ViewModels
         public DetalleTareaViewModel(DataContext dataContext)
         {
             _dataContext = dataContext;
+            // Cargamos las categorías al instanciar
+            _ = CargarCategorias();
+        }
+
+        [ObservableProperty]
+        private CategoriaModel? _categoriaSeleccionada;
+
+        // Este método se ejecuta automáticamente cuando cambia la selección
+        partial void OnCategoriaSeleccionadaChanged(CategoriaModel? value)
+        {
+            if (value != null)
+            {
+                CategoriaId = value.Id;
+            }
+        }
+        public async Task CargarCategorias()
+        {
+            var lista = await _dataContext.Categorias.ToListAsync();
+            Categorias = new ObservableCollection<CategoriaModel>(lista);
         }
 
         [RelayCommand]
         public async Task GuardarTarea()
         {
-            if (_tareaOriginal?.Id > 0)
-            {
-                var entidad = await _dataContext.Tareas.FindAsync(_tareaOriginal.Id);
-                if (entidad is not null)
-                {
-                    entidad.Titulo = Titulo;
-                    entidad.Descripcion = Descripcion;
-                    entidad.FechaLimite = FechaLimite;
-                    entidad.Completada = Completada;
-                    _dataContext.Tareas.Update(entidad);
-                }
-            }
-            else
-            {
-                var nueva = new TareaModel
-                {
-                    Titulo = Titulo,
-                    Descripcion = Descripcion,
-                    FechaLimite = FechaLimite,
-                    Completada = Completada,
-                    CategoriaId = CategoriaId
-                };
-                await _dataContext.Tareas.AddAsync(nueva);
-            }
+            if (!IsFormValid) return;
 
-            await _dataContext.SaveChangesAsync();
-            await Shell.Current.DisplayAlert("Éxito", "Tarea guardada correctamente.", "OK");
-            await Shell.Current.GoToAsync("..");
+            try
+            {
+                if (_tareaOriginal?.Id > 0)
+                {
+                    var entidad = await _dataContext.Tareas.FindAsync(_tareaOriginal.Id);
+                    if (entidad is not null)
+                    {
+                        entidad.Titulo = Titulo;
+                        entidad.Descripcion = Descripcion;
+                        entidad.FechaLimite = FechaLimite;
+                        entidad.Completada = Completada;
+                        entidad.CategoriaId = CategoriaId; // Actualizar categoría
+                        _dataContext.Tareas.Update(entidad);
+                    }
+                }
+                else
+                {
+                    var nueva = new TareaModel
+                    {
+                        Titulo = Titulo,
+                        Descripcion = Descripcion,
+                        FechaLimite = FechaLimite,
+                        Completada = Completada,
+                        CategoriaId = CategoriaId
+                    };
+                    await _dataContext.Tareas.AddAsync(nueva);
+                }
+
+                await _dataContext.SaveChangesAsync();
+                await Shell.Current.DisplayAlert("Éxito", "Tarea guardada correctamente.", "OK");
+                await Shell.Current.GoToAsync("..");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"No se pudo guardar: {ex.Message}", "OK");
+            }
         }
 
         [RelayCommand]
@@ -95,6 +128,7 @@ namespace PettoV1.ViewModels
 
             string resp = await Shell.Current.DisplayActionSheet(
                 "¿Eliminar esta tarea?", "Cancelar", "Eliminar");
+
             if (resp != "Eliminar") return;
 
             var entidad = await _dataContext.Tareas.FindAsync(_tareaOriginal!.Id);

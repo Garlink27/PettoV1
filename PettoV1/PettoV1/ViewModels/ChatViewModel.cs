@@ -11,15 +11,11 @@ namespace PettoV1.ViewModels
     {
         private readonly DataContext _dataContext;
 
-        [ObservableProperty]
-        private ObservableCollection<MensajeModel> _mensajes = new();
-
+        [ObservableProperty] private ObservableCollection<MensajeModel> _mensajes = new();
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(PuedeEnviar))]
         private string _mensajeActual = string.Empty;
-
-        [ObservableProperty]
-        private string _fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        [ObservableProperty] private string _fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
         public bool PuedeEnviar => !string.IsNullOrWhiteSpace(MensajeActual);
 
@@ -30,9 +26,12 @@ namespace PettoV1.ViewModels
 
         public async Task InicializarAsync()
         {
+            int usuarioId = Preferences.Get("UsuarioId", 0);
+
             Mensajes.Clear();
             var historial = await _dataContext.Mensajes
                 .AsNoTracking()
+                .Where(m => m.UsuarioId == usuarioId)
                 .OrderBy(m => m.FechaHora)
                 .ToListAsync();
             foreach (var m in historial) Mensajes.Add(m);
@@ -43,11 +42,14 @@ namespace PettoV1.ViewModels
         {
             if (!PuedeEnviar) return;
 
+            int usuarioId = Preferences.Get("UsuarioId", 0);
+
             var mensaje = new MensajeModel
             {
                 Contenido = MensajeActual,
                 EsRespuestaIA = false,
-                FechaHora = DateTime.Now
+                FechaHora = DateTime.Now,
+                UsuarioId = usuarioId
             };
 
             await _dataContext.Mensajes.AddAsync(mensaje);
@@ -57,13 +59,14 @@ namespace PettoV1.ViewModels
             string texto = MensajeActual;
             MensajeActual = string.Empty;
 
-            // Respuesta simulada de la IA (placeholder hasta implementar APIService)
             await Task.Delay(600);
+
             var respuestaIA = new MensajeModel
             {
-                Contenido = $"Recibí tu mensaje: \"{texto}\". Próximamente tendrás respuestas inteligentes aquí.",
+                Contenido = $"Recibí tu mensaje: \"{texto}\". Próximamente tendrás respuestas inteligentes.",
                 EsRespuestaIA = true,
-                FechaHora = DateTime.Now
+                FechaHora = DateTime.Now,
+                UsuarioId = usuarioId
             };
             await _dataContext.Mensajes.AddAsync(respuestaIA);
             await _dataContext.SaveChangesAsync();
@@ -74,7 +77,6 @@ namespace PettoV1.ViewModels
         public void AbrirMenu() => Shell.Current.FlyoutIsPresented = true;
 
         [RelayCommand]
-        public async Task IrAPerfil() => await Shell.Current.GoToAsync("PerfilPage");
+        public async Task IrAPerfil() => await Shell.Current.GoToAsync("Perfil");
     }
 }
-

@@ -4,19 +4,19 @@ namespace PettoV1.Views
 {
     public partial class Tareas : ContentPage
     {
-        private readonly TareasViewModel _vm;
-
-        public Tareas(TareasViewModel vm)
+        public Tareas()
         {
             InitializeComponent();
-            _vm = vm;
-            BindingContext = vm;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await _vm.InicializarAsync();
+            BindingContext ??= IPlatformApplication.Current?.Services
+                              .GetService<TareasViewModel>();
+
+            if (BindingContext is TareasViewModel vm)
+                await vm.InicializarAsync();
         }
     }
 }

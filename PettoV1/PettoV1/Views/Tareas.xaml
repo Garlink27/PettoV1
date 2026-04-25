@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:PettoV1.ViewModels"
-             xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
              x:Class="PettoV1.Views.Tareas"
-             x:DataType="vm:TareasViewModel"
-             BackgroundColor="#FFFFFF"
+             BackgroundColor="#D5F9FF"
              Title="Tareas">
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
         <!-- ── Header ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
-            <ImageButton Grid.Column="0" Source="menu_icon.png"
+              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+            <ImageButton Grid.Column="0"
+                         Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
                          BackgroundColor="Transparent"
                          Command="{Binding AbrirMenuCommand}"/>
@@ -21,45 +19,94 @@
                    Text="{Binding FechaHora}"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   FontSize="13" TextColor="#006064"/>
-            <ImageButton Grid.Column="2" Source="user_icon.png"
+                   FontSize="13" TextColor="#26C6DA"/>
+            <ImageButton Grid.Column="2"
+                         Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B2EBF2" CornerRadius="22"
+                         BackgroundColor="#B0E0E6"
+                         CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
 
         <!-- ── Contenido ── -->
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="16" Spacing="20">
+            <VerticalStackLayout Padding="16" Spacing="16">
 
-                <!-- Tareas próximas -->
+                <!-- ── Tareas próximas ── -->
                 <Label Text="Tareas próximas"
-                       FontSize="18" FontAttributes="Bold" TextColor="#0D1B2A"/>
+                       FontSize="18" FontAttributes="Bold"
+                       TextColor="#2C2C2C"/>
 
-                <CollectionView ItemsSource="{Binding TareasProximas}"
-                                EmptyView="No hay tareas próximas">
+                <CollectionView ItemsSource="{Binding TareasProximas}">
+                    <CollectionView.EmptyView>
+                        <Label Text="No hay tareas próximas"
+                               FontSize="14" TextColor="#9E9E9E"
+                               HorizontalOptions="Center"
+                               Margin="0,8"/>
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:TareaModel">
-                            <Grid Padding="0,4">
-                                <BoxView HeightRequest="1" Color="#E0E0E0"
-                                         VerticalOptions="End"/>
-                                <Label Text="{Binding Titulo}"
-                                       FontSize="15" TextColor="#0D1B2A"
-                                       Padding="4,10"/>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="Auto,*" Padding="0,8">
+                                <BoxView Grid.Column="0"
+                                         WidthRequest="10" HeightRequest="10"
+                                         BackgroundColor="#26C6DA"
+                                         CornerRadius="5"
+                                         VerticalOptions="Center"
+                                         Margin="0,0,10,0"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Titulo}"
+                                       FontSize="15" TextColor="#2C2C2C"
+                                       VerticalOptions="Center"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
                 <!-- Separador -->
-                <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,4"/>
+                <BoxView HeightRequest="1" Color="#80DEEA" Margin="0,4"/>
 
-                <!-- Categorías (cuadrícula 2 columnas) -->
-                <Label Text="Categorías"
-                       FontSize="18" FontAttributes="Bold" TextColor="#0D1B2A"/>
+                <!-- ── Categorías + botón agregar ── -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="Categorías"
+                           FontSize="18" FontAttributes="Bold"
+                           TextColor="#2C2C2C"
+                           VerticalOptions="Center"/>
 
-                <CollectionView ItemsSource="{Binding Categorias}"
-                                EmptyView="Sin categorías">
+                    <!-- Botón + para agregar categoría -->
+                    <Frame Grid.Column="1"
+                           BackgroundColor="#2C2C2C"
+                           CornerRadius="20"
+                           Padding="0"
+                           WidthRequest="40" HeightRequest="40"
+                           HasShadow="False">
+                        <Label Text="+"
+                               FontSize="26"
+                               TextColor="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Margin="0,-2,0,0">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding AgregarCategoriaCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Frame>
+                </Grid>
+
+                <!-- Grid de categorías 2 columnas -->
+                <CollectionView ItemsSource="{Binding Categorias}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                             Spacing="8" Margin="0,20">
+                            <Label Text="Sin categorías aún"
+                                   FontSize="14" TextColor="#9E9E9E"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Toca el botón + para agregar una"
+                                   FontSize="12" TextColor="#B3B3B3"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical"
                                          Span="2"
@@ -67,21 +114,34 @@
                                          VerticalItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:CategoriaModel">
-                            <Frame BackgroundColor="#F5F5F5"
+                        <DataTemplate>
+                            <Frame BackgroundColor="White"
                                    CornerRadius="12"
                                    Padding="12"
-                                   HasShadow="False">
+                                   HasShadow="False"
+                                   HeightRequest="80">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TareasViewModel}},
-                                                          Path=VerCategoriaCommand}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}},
+                                                          Path=BindingContext.VerCategoriaCommand}"
                                         CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
-                                <Label Text="{Binding Nombre}"
-                                       FontSize="15" TextColor="#0D1B2A"
-                                       HorizontalOptions="Center"
-                                       HorizontalTextAlignment="Center"/>
+                                <Grid RowDefinitions="*,Auto">
+                                    <Label Grid.Row="0"
+                                           Text="{Binding Nombre}"
+                                           FontSize="15"
+                                           FontAttributes="Bold"
+                                           TextColor="#2C2C2C"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           HorizontalTextAlignment="Center"/>
+                                    <!-- Línea decorativa inferior -->
+                                    <BoxView Grid.Row="1"
+                                             HeightRequest="3"
+                                             BackgroundColor="#D5F9FF"
+                                             CornerRadius="2"
+                                             Margin="0,4,0,0"/>
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

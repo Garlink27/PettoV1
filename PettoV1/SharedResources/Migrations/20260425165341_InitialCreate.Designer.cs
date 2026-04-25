@@ -11,7 +11,7 @@ using SharedResources.Data;
 namespace SharedResources.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260425075922_InitialCreate")]
+    [Migration("20260425165341_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -31,7 +31,12 @@ namespace SharedResources.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Categorias");
                 });
@@ -76,7 +81,12 @@ namespace SharedResources.Migrations
                     b.Property<DateTime>("FechaHora")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Mensajes");
                 });
@@ -141,10 +151,32 @@ namespace SharedResources.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("SharedResources.Models.CategoriaModel", b =>
+                {
+                    b.HasOne("SharedResources.Models.UsuarioModel", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("SharedResources.Models.MascotaModel", b =>
                 {
                     b.HasOne("SharedResources.Models.UsuarioModel", "Usuario")
                         .WithMany("Mascotas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("SharedResources.Models.MensajeModel", b =>
+                {
+                    b.HasOne("SharedResources.Models.UsuarioModel", "Usuario")
+                        .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -57,6 +57,7 @@ namespace PettoV1
 
             using (var scope = app.Services.CreateScope())
             {
+
                 var dataBase = scope.ServiceProvider.GetRequiredService<DataContext>();
                 dataBase.Database.Migrate();
             }

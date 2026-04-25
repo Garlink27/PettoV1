@@ -9,7 +9,6 @@
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
-        <!-- ── Header ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
               Padding="12,44,12,10" BackgroundColor="#E0F7FA">
             <ImageButton Grid.Column="0" Source="arrow_left_icon.png"
@@ -26,13 +25,10 @@
                          IsVisible="{Binding EsModoEdicion}"/>
         </Grid>
 
-        <!-- ── Formulario ── -->
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="20" Spacing="14">
 
-                <!-- Título -->
-                <Label Text="Título de la tarea"
-                       FontSize="14" TextColor="#546E7A"/>
+                <Label Text="Título de la tarea" FontSize="14" TextColor="#546E7A"/>
                 <Entry Placeholder="Escribe el título"
                        Text="{Binding Titulo}"
                        TextColor="#0D1B2A"
@@ -40,35 +36,15 @@
                        FontSize="18"
                        BackgroundColor="#F5F5F5">
                     <Entry.Triggers>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsTituloValid}" Value="False">
+                        <DataTrigger TargetType="Entry" Binding="{Binding IsTituloValid}" Value="False">
                             <Setter Property="BackgroundColor" Value="#FFEBEE"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsTituloValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
                         </DataTrigger>
                     </Entry.Triggers>
                 </Entry>
-                <Label Text="El título es requerido"
-                       TextColor="#C62828" FontSize="12" IsVisible="False">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsTituloValid}" Value="False">
-                            <Setter Property="IsVisible" Value="True"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsTituloValid}" Value="True">
-                            <Setter Property="IsVisible" Value="False"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
 
                 <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
-                <!-- Fecha límite -->
-                <Label Text="Fecha límite"
-                       FontSize="14" TextColor="#546E7A"/>
+                <Label Text="Fecha límite" FontSize="14" TextColor="#546E7A"/>
                 <DatePicker Date="{Binding FechaLimite}"
                             Format="dd/MM/yyyy"
                             TextColor="#0D1B2A"
@@ -76,9 +52,17 @@
 
                 <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
-                <!-- Descripción -->
-                <Label Text="Descripción"
-                       FontSize="14" TextColor="#546E7A"/>
+                <Label Text="Categoría" FontSize="14" TextColor="#546E7A"/>
+                <Picker Title="Selecciona una categoría"
+                        ItemsSource="{Binding Categorias}"
+                        ItemDisplayBinding="{Binding Nombre}"
+                        SelectedItem="{Binding CategoriaSeleccionada}"
+                        TextColor="#0D1B2A"
+                        BackgroundColor="#F5F5F5" />
+
+                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+
+                <Label Text="Descripción" FontSize="14" TextColor="#546E7A"/>
                 <Editor Placeholder="Agrega una descripción..."
                         Text="{Binding Descripcion}"
                         TextColor="#0D1B2A"
@@ -89,18 +73,12 @@
 
                 <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
-                <!-- Completada -->
                 <Grid ColumnDefinitions="*,Auto">
-                    <Label Grid.Column="0"
-                           Text="Marcar como completada"
-                           FontSize="15" TextColor="#0D1B2A"
-                           VerticalOptions="Center"/>
-                    <Switch Grid.Column="1"
-                            IsToggled="{Binding Completada}"
-                            OnColor="#006064"/>
+                    <Label Grid.Column="0" Text="Marcar como completada"
+                           FontSize="15" TextColor="#0D1B2A" VerticalOptions="Center"/>
+                    <Switch Grid.Column="1" IsToggled="{Binding Completada}" OnColor="#006064"/>
                 </Grid>
 
-                <!-- Botones de acción -->
                 <Button Text="Guardar tarea"
                         TextColor="White"
                         CornerRadius="8"
@@ -109,12 +87,10 @@
                         Command="{Binding GuardarTareaCommand}"
                         Margin="0,16,0,0">
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding IsFormValid}" Value="False">
+                        <DataTrigger TargetType="Button" Binding="{Binding IsFormValid}" Value="False">
                             <Setter Property="BackgroundColor" Value="#B0BEC5"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding IsFormValid}" Value="True">
+                        <DataTrigger TargetType="Button" Binding="{Binding IsFormValid}" Value="True">
                             <Setter Property="BackgroundColor" Value="#006064"/>
                         </DataTrigger>
                     </Button.Triggers>
@@ -130,6 +106,5 @@
 
             </VerticalStackLayout>
         </ScrollView>
-
     </Grid>
 </ContentPage>

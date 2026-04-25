@@ -22,6 +22,7 @@ namespace SharedResources.Data
                 entity.Property(e => e.NombreUsuario).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Contrasena).IsRequired();
                 entity.HasIndex(e => e.Email).IsUnique();
+
                 entity.HasMany(e => e.Mascotas)
                       .WithOne(m => m.Usuario)
                       .HasForeignKey(m => m.UsuarioId);
@@ -31,9 +32,16 @@ namespace SharedResources.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Nombre).IsRequired().HasMaxLength(50);
+
+                entity.HasOne(e => e.Usuario)
+                      .WithMany()
+                      .HasForeignKey(e => e.UsuarioId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
                 entity.HasMany(e => e.Tareas)
                       .WithOne(t => t.Categoria)
-                      .HasForeignKey(t => t.CategoriaId);
+                      .HasForeignKey(t => t.CategoriaId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<TareaModel>(entity =>
@@ -53,6 +61,11 @@ namespace SharedResources.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Contenido).IsRequired();
+
+                entity.HasOne(e => e.Usuario)
+                      .WithMany()
+                      .HasForeignKey(e => e.UsuarioId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             base.OnModelCreating(modelBuilder);

@@ -5,25 +5,25 @@
              xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
              x:Class="PettoV1.Views.Chat"
              x:DataType="vm:ChatViewModel"
-             BackgroundColor="#D5F9FF"
+             BackgroundColor="#FFFFFF"
              Title="Chat">
 
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
         <!-- ── Header ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
             <ImageButton Grid.Column="0" Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
                          BackgroundColor="Transparent"
-                         Command="{Binding AbrirMenuCommand}"/> 
+                         Command="{Binding AbrirMenuCommand}"/>
             <Label Grid.Column="1"
                    Text="{Binding FechaHora}"
                    HorizontalOptions="Center" VerticalOptions="Center"
-                   FontSize="13" TextColor="#2C2C2C"/>
+                   FontSize="13" TextColor="#006064"/>
             <ImageButton Grid.Column="2" Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B0E0E6" CornerRadius="22"
+                         BackgroundColor="#B2EBF2" CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
 
@@ -36,7 +36,7 @@
                 <DataTemplate x:DataType="models:MensajeModel">
                     <Grid Padding="12,6">
                         <!-- Mensaje del usuario (derecha) -->
-                        <Frame BackgroundColor="#2C2C2C"
+                        <Frame BackgroundColor="#006064"
                                CornerRadius="16"
                                Padding="12,8"
                                HorizontalOptions="End"
@@ -48,7 +48,7 @@
                                    FontSize="14"/>
                         </Frame>
                         <!-- Respuesta IA (izquierda) -->
-                        <Frame BackgroundColor="White"
+                        <Frame BackgroundColor="#F5F5F5"
                                CornerRadius="16"
                                Padding="12,8"
                                HorizontalOptions="Start"
@@ -56,7 +56,7 @@
                                HasShadow="False"
                                IsVisible="{Binding EsRespuestaIA}">
                             <Label Text="{Binding Contenido}"
-                                   TextColor="#2C2C2C"
+                                   TextColor="#0D1B2A"
                                    FontSize="14"/>
                         </Frame>
                     </Grid>
@@ -68,17 +68,16 @@
         <Grid Grid.Row="2"
               ColumnDefinitions="*,Auto"
               Padding="12,8"
-              BackgroundColor="White">
+              BackgroundColor="#F5F5F5">
             <Entry Grid.Column="0"
                    Placeholder="Escribe un mensaje..."
                    Text="{Binding MensajeActual}"
-                   PlaceholderColor="#B3B3B3"
-                   TextColor="#1E1E1E"
+                   PlaceholderColor="#90A4AE"
+                   TextColor="#0D1B2A"
                    BackgroundColor="White"
                    ReturnCommand="{Binding EnviarMensajeCommand}"/>
             <Button Grid.Column="1"
                     Text="Enviar"
-                    BackgroundColor="#26C6DA"
                     TextColor="White"
                     CornerRadius="8"
                     Padding="12,0"
@@ -91,7 +90,7 @@
                     </DataTrigger>
                     <DataTrigger TargetType="Button"
                                  Binding="{Binding PuedeEnviar}" Value="True">
-                        <Setter Property="BackgroundColor" Value="#26C6DA"/>
+                        <Setter Property="BackgroundColor" Value="#006064"/>
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

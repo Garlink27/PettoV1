@@ -12,24 +12,15 @@ namespace PettoV1.ViewModels
         private readonly DataContext _dataContext;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsEmailValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _email = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsUsernameValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _nombreUsuario = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsPasswordValid))]
-        [NotifyPropertyChangedFor(nameof(IsConfirmPasswordValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _contrasena = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsConfirmPasswordValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _confirmarContrasena = string.Empty;
 
         public bool IsEmailValid =>
@@ -56,6 +47,31 @@ namespace PettoV1.ViewModels
             _dataContext = dataContext;
         }
 
+        partial void OnEmailChanged(string value)
+        {
+            OnPropertyChanged(nameof(IsEmailValid));
+            OnPropertyChanged(nameof(IsFormValid));
+        }
+
+        partial void OnNombreUsuarioChanged(string value)
+        {
+            OnPropertyChanged(nameof(IsUsernameValid));
+            OnPropertyChanged(nameof(IsFormValid));
+        }
+
+        partial void OnContrasenaChanged(string value)
+        {
+            OnPropertyChanged(nameof(IsPasswordValid));
+            OnPropertyChanged(nameof(IsConfirmPasswordValid));
+            OnPropertyChanged(nameof(IsFormValid));
+        }
+
+        partial void OnConfirmarContrasenaChanged(string value)
+        {
+            OnPropertyChanged(nameof(IsConfirmPasswordValid));
+            OnPropertyChanged(nameof(IsFormValid));
+        }
+
         [RelayCommand]
         public async Task Registrarse()
         {
@@ -64,8 +80,7 @@ namespace PettoV1.ViewModels
 
             if (emailExiste)
             {
-                await Shell.Current.DisplayAlert(
-                    "Error", "Ya existe una cuenta con ese correo.", "OK");
+                await Shell.Current.DisplayAlert("Error", "Ya existe una cuenta con ese correo.", "OK");
                 return;
             }
 
@@ -79,8 +94,7 @@ namespace PettoV1.ViewModels
             await _dataContext.Usuarios.AddAsync(nuevoUsuario);
             await _dataContext.SaveChangesAsync();
 
-            await Shell.Current.DisplayAlert(
-                "Éxito", "Cuenta creada exitosamente.", "OK");
+            await Shell.Current.DisplayAlert("Éxito", "Cuenta creada exitosamente.", "OK");
             await Shell.Current.GoToAsync("..");
         }
 

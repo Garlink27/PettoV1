@@ -4,14 +4,14 @@
              xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.Perfil"
              x:DataType="vm:PerfilViewModel"
-             BackgroundColor="#D5F9FF"
+             BackgroundColor="#FFFFFF"
              Title="Perfil">
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
         <!-- ── Header ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
             <ImageButton Grid.Column="0" Source="arrow_left_icon.png"
                          WidthRequest="40" HeightRequest="40"
                          BackgroundColor="Transparent"
@@ -20,7 +20,7 @@
                    Text="Perfil"
                    HorizontalOptions="Center" VerticalOptions="Center"
                    FontSize="20" FontAttributes="Bold"
-                   TextColor="#2C2C2C"/>
+                   TextColor="#006064"/>
             <ImageButton Grid.Column="2" Source="settings_icon.png"
                          WidthRequest="36" HeightRequest="36"
                          BackgroundColor="Transparent"
@@ -33,13 +33,12 @@
 
                 <!-- Avatar -->
                 <Grid HorizontalOptions="Center" WidthRequest="130" HeightRequest="130">
-                    <Ellipse Fill="#B0E0E6"
+                    <Ellipse Fill="#B2EBF2"
                              WidthRequest="130" HeightRequest="130"/>
                     <Image Source="user_large_icon.png"
                            WidthRequest="90" HeightRequest="90"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"/>
-                    <!-- Botón editar foto (ícono pequeño) -->
                     <ImageButton Source="edit_icon.png"
                                  WidthRequest="28" HeightRequest="28"
                                  BackgroundColor="White"
@@ -51,48 +50,48 @@
                 <!-- Nombre de usuario -->
                 <Label Text="{Binding NombreUsuario}"
                        FontSize="22" FontAttributes="Bold"
-                       TextColor="#2C2C2C"
+                       TextColor="#0D1B2A"
                        HorizontalOptions="Center"/>
 
                 <!-- Sección Información -->
-                <BoxView HeightRequest="1" Color="#80DEEA"/>
+                <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
                 <Label Text="Información"
                        FontSize="16" FontAttributes="Bold"
-                       TextColor="#2C2C2C"/>
+                       TextColor="#0D1B2A"/>
 
                 <!-- Email -->
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Email" FontSize="13" TextColor="#607D8B"/>
+                    <Label Text="Email" FontSize="13" TextColor="#546E7A"/>
                     <Label Text="{Binding Email}"
-                           FontSize="15" TextColor="#2C2C2C"/>
+                           FontSize="15" TextColor="#0D1B2A"/>
                 </VerticalStackLayout>
 
-                <BoxView HeightRequest="1" Color="#B0E0E6"/>
+                <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
-                <!-- Contraseña (solo muestra asteriscos) -->
+                <!-- Contraseña -->
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Contraseña" FontSize="13" TextColor="#607D8B"/>
+                    <Label Text="Contraseña" FontSize="13" TextColor="#546E7A"/>
                     <Label Text="••••••••"
-                           FontSize="15" TextColor="#2C2C2C"/>
+                           FontSize="15" TextColor="#0D1B2A"/>
                 </VerticalStackLayout>
 
-                <BoxView HeightRequest="1" Color="#B0E0E6"/>
+                <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
-                <!-- Teléfono (editable) -->
+                <!-- Teléfono -->
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Teléfono" FontSize="13" TextColor="#607D8B"/>
+                    <Label Text="Teléfono" FontSize="13" TextColor="#546E7A"/>
                     <Entry Text="{Binding Telefono}"
                            Placeholder="Agrega tu teléfono"
                            Keyboard="Telephone"
-                           TextColor="#2C2C2C"
-                           PlaceholderColor="#B3B3B3"
-                           BackgroundColor="White"/>
+                           TextColor="#0D1B2A"
+                           PlaceholderColor="#90A4AE"
+                           BackgroundColor="#F5F5F5"/>
                 </VerticalStackLayout>
 
                 <!-- Botón Guardar -->
                 <Button Text="Guardar cambios"
-                        BackgroundColor="#2C2C2C"
+                        BackgroundColor="#006064"
                         TextColor="White"
                         CornerRadius="8"
                         HeightRequest="50"

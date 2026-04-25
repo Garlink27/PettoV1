@@ -1,16 +1,120 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="PettoV1.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:PettoV1"
-    xmlns:Views="clr-namespace:PettoV1.Views"
-    Shell.FlyoutBehavior="Flyout"
-    Title="PettoV1">
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:PettoV1.Views"
+       xmlns:converters="clr-namespace:PettoV1.Converters"
+       x:Class="PettoV1.AppShell"
+       Shell.NavBarIsVisible="False"
+       FlyoutBehavior="Flyout"
+       FlyoutWidth="240"
+       BackgroundColor="#E0F7FA">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate Views:Login}"
-        Route="MainPage" />
+    <Shell.Resources>
+        <converters:FlyoutTitleToColorConverter x:Key="TitleToColor"/>
+    </Shell.Resources>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="0.2*,0.8*"
+                  HeightRequest="50"
+                  Padding="8,0">
+                <Image Grid.Column="0"
+                       Source="{Binding Icon}"
+                       WidthRequest="22" HeightRequest="22"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                <Label Grid.Column="1"
+                       Text="{Binding Title}"
+                       TextColor="{Binding Title, Converter={StaticResource TitleToColor}}"
+                       FontSize="15"
+                       VerticalOptions="Center"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <!-- Encabezado del Flyout -->
+    <Shell.FlyoutHeader>
+        <Grid BackgroundColor="#E0F7FA" Padding="16,40,16,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Ellipse Grid.Row="0"
+                     WidthRequest="70" HeightRequest="70"
+                     HorizontalOptions="Start"
+                     Fill="#B2EBF2"/>
+            <Label Grid.Row="1"
+                   Text="Usuario"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   TextColor="#006064"
+                   Margin="0,8,0,0"/>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutFooter>
+        <StackLayout Padding="16,8" BackgroundColor="#E0F7FA">
+            <BoxView HeightRequest="1" Color="#B2EBF2" Margin="0,0,0,8"/>
+            <Button Text="Cerrar Sesión"
+                    BackgroundColor="#D32F2F"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Command="{Binding CerrarSesionCommand}"/>
+        </StackLayout>
+    </Shell.FlyoutFooter>
+
+    <!-- Login: sin flyout, sin tabbar -->
+    <ShellContent Route="Login"
+                  ContentTemplate="{DataTemplate views:Login}"
+                  Shell.TabBarIsVisible="False"
+                  Shell.NavBarIsVisible="False"
+                  FlyoutItemIsVisible="False"/>
+
+    <!-- FlyoutItem principal: contiene los 4 tabs -->
+    <FlyoutItem Title="Home" Icon="home_icon.png"
+                Shell.TabBarForegroundColor="Black"
+                Shell.TabBarUnselectedColor="Black">
+        <Tab Title="Home" Icon="home_icon.png">
+            <ShellContent Route="MainPage"
+                          ContentTemplate="{DataTemplate views:MainPage}"
+                          Shell.NavBarIsVisible="False"/>
+        </Tab>
+        <Tab Title="Chat" Icon="chat_icon.png"
+             Shell.TabBarForegroundColor="Black"
+             Shell.TabBarUnselectedColor="Black">
+            <ShellContent Route="Chat"
+                          ContentTemplate="{DataTemplate views:Chat}"
+                          Shell.NavBarIsVisible="False"/>
+        </Tab>
+        <Tab Title="Tareas" Icon="tasks_icon.png"
+             Shell.TabBarForegroundColor="Black"
+            Shell.TabBarUnselectedColor="Black">
+            <ShellContent Route="Tareas"
+                          ContentTemplate="{DataTemplate views:Tareas}"
+                          Shell.NavBarIsVisible="False"/>
+        </Tab>
+        <Tab Title="Gráficas" Icon="stats_icon.png"
+             Shell.TabBarForegroundColor="Black"
+             Shell.TabBarUnselectedColor="Black">
+            <ShellContent Route="Estadisticas"
+                          ContentTemplate="{DataTemplate views:Estadisticas}"
+                          Shell.NavBarIsVisible="False"/>
+        </Tab>
+    </FlyoutItem>
+
+    <!-- FlyoutItems secundarios: sin tabbar -->
+    <FlyoutItem Title="Historial de Tareas" Icon="history_icon.png">
+        <ShellContent Route="HistorialTareas"
+                      ContentTemplate="{DataTemplate views:HistorialTareas}"
+                      Shell.NavBarIsVisible="False"
+                      Shell.TabBarIsVisible="False"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Configuraciones" Icon="settings_icon.png">
+        <ShellContent Route="Configuracion"
+                      ContentTemplate="{DataTemplate views:Configuracion}"
+                      Shell.NavBarIsVisible="False"
+                      Shell.TabBarIsVisible="False"/>
+    </FlyoutItem>
 
 </Shell>

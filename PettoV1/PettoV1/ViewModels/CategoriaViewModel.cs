@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using PettoV1.Pages;
 using PettoV1.Views;
 using SharedResources.Data;
 using SharedResources.Models;

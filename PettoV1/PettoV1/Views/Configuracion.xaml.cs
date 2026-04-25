@@ -4,10 +4,17 @@ namespace PettoV1.Views
 {
     public partial class Configuracion : ContentPage
     {
-        public Configuracion(ConfiguracionViewModel vm)
+        public Configuracion( )
         {
-            InitializeComponent();
-            BindingContext = vm;
+            InitializeComponent();        
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext ??= IPlatformApplication.Current?.Services
+                              .GetService<ConfiguracionViewModel>();
+        }
+
     }
 }

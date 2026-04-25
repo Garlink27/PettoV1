@@ -3,9 +3,15 @@ namespace PettoV1.Views;
 
 public partial class Categoria : ContentPage
 {
-	public Categoria(CategoriaViewModel vm)
+	public Categoria()
 	{
 		InitializeComponent();
-		BindingContext = vm;
+
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        BindingContext ??= IPlatformApplication.Current?.Services
+                          .GetService<CategoriaViewModel>();
     }
 }

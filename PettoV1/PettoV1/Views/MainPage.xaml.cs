@@ -4,10 +4,16 @@ namespace PettoV1.Views
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage(MainViewModel vm)
+        public MainPage()
         {
             InitializeComponent();
-            BindingContext = vm;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext ??= IPlatformApplication.Current?.Services
+                              .GetService<MainViewModel>();
         }
     }
 }

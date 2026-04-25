@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using PettoV1.Pages;
-using PettoV1.Views;
 using SharedResources.Data;
 using System.Text.RegularExpressions;
 
@@ -12,37 +10,37 @@ namespace PettoV1.ViewModels
     {
         private readonly DataContext _dataContext;
 
-        // ──────────────── Propiedades observables ────────────────
-
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsEmailValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _email = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsPasswordValid))]
-        [NotifyPropertyChangedFor(nameof(IsFormValid))]
         private string _contrasena = string.Empty;
 
-
-        /// <summary>Correo válido si tiene formato email.</summary>
         public bool IsEmailValid =>
             !string.IsNullOrWhiteSpace(Email) &&
             Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
 
-        /// <summary>Contraseña válida si tiene al menos 6 caracteres.</summary>
         public bool IsPasswordValid =>
             !string.IsNullOrWhiteSpace(Contrasena) && Contrasena.Length >= 6;
 
-        /// <summary>Formulario válido cuando email y contraseña son válidos.</summary>
         public bool IsFormValid => IsEmailValid && IsPasswordValid;
-
 
         public LoginViewModel(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
+        partial void OnEmailChanged(string value)
+        {
+            OnPropertyChanged(nameof(IsEmailValid));
+            OnPropertyChanged(nameof(IsFormValid));
+        }
+
+        partial void OnContrasenaChanged(string value)
+        {
+            OnPropertyChanged(nameof(IsPasswordValid));
+            OnPropertyChanged(nameof(IsFormValid));
+        }
 
         [RelayCommand]
         public async Task IniciarSesion()
@@ -57,14 +55,13 @@ namespace PettoV1.ViewModels
                 return;
             }
 
-            // Navegar al Home y limpiar el historial de navegación
-            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+            await Shell.Current.GoToAsync("//MainPage");
         }
 
         [RelayCommand]
         public async Task IrARegistro()
         {
-            await Shell.Current.GoToAsync(nameof(Registro));
+            await Shell.Current.GoToAsync(nameof(Views.Registro));
         }
     }
 }

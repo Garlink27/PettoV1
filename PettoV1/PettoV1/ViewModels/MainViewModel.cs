@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PettoV1.Pages;
 using PettoV1.Views;
 
 namespace PettoV1.ViewModels

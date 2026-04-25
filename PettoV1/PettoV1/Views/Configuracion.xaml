@@ -4,14 +4,14 @@
              xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.Configuracion"
              x:DataType="vm:ConfiguracionViewModel"
-             BackgroundColor="#D5F9FF"
+             BackgroundColor="#FFFFFF"
              Title="Configuraciones">
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
         <!-- ── Header ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
             <ImageButton Grid.Column="0" Source="arrow_left_icon.png"
                          WidthRequest="40" HeightRequest="40"
                          BackgroundColor="Transparent"
@@ -20,7 +20,7 @@
                    Text="Configuraciones"
                    HorizontalOptions="Center" VerticalOptions="Center"
                    FontSize="20" FontAttributes="Bold"
-                   TextColor="#2C2C2C"/>
+                   TextColor="#006064"/>
         </Grid>
 
         <!-- ── Contenido ── -->
@@ -32,7 +32,7 @@
                       Padding="0,18,0,18">
                     <Label Grid.Column="0"
                            Text="Idioma"
-                           FontSize="16" TextColor="#2C2C2C"
+                           FontSize="16" TextColor="#0D1B2A"
                            VerticalOptions="Center"/>
                     <ImageButton Grid.Column="1"
                                  Source="arrow_right_icon.png"
@@ -42,47 +42,47 @@
                         <TapGestureRecognizer Command="{Binding GuardarIdiomaCommand}"/>
                     </Grid.GestureRecognizers>
                 </Grid>
-                <BoxView HeightRequest="1" Color="#80DEEA"/>
+                <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
                 <!-- Selector de idioma -->
                 <Picker ItemsSource="{Binding Idiomas}"
                         SelectedItem="{Binding IdiomaSeleccionado}"
-                        TextColor="#2C2C2C"
-                        BackgroundColor="White"
+                        TextColor="#0D1B2A"
+                        BackgroundColor="#F5F5F5"
                         Margin="0,10,0,10"/>
 
                 <Button Text="Guardar idioma"
-                        BackgroundColor="#26C6DA"
+                        BackgroundColor="#006064"
                         TextColor="White"
                         CornerRadius="8"
                         HeightRequest="44"
                         Command="{Binding GuardarIdiomaCommand}"
                         Margin="0,0,0,24"/>
 
-                <BoxView HeightRequest="1" Color="#80DEEA"/>
+                <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
                 <!-- ── Sección Cambiar contraseña ── -->
                 <Grid ColumnDefinitions="*,Auto"
                       Padding="0,18,0,18">
                     <Label Grid.Column="0"
                            Text="Cambiar contraseña"
-                           FontSize="16" TextColor="#2C2C2C"
+                           FontSize="16" TextColor="#0D1B2A"
                            VerticalOptions="Center"/>
                     <ImageButton Grid.Column="1"
                                  Source="arrow_right_icon.png"
                                  WidthRequest="28" HeightRequest="28"
                                  BackgroundColor="Transparent"/>
                 </Grid>
-                <BoxView HeightRequest="1" Color="#80DEEA" Margin="0,0,0,16"/>
+                <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,0,0,16"/>
 
                 <!-- Contraseña actual -->
-                <Label Text="Contraseña actual" FontSize="14" TextColor="#607D8B"/>
+                <Label Text="Contraseña actual" FontSize="14" TextColor="#546E7A"/>
                 <Entry Placeholder="Ingresa tu contraseña actual"
                        Text="{Binding ContrasenaActual}"
                        IsPassword="True"
-                       TextColor="#1E1E1E"
-                       PlaceholderColor="#B3B3B3"
-                       BackgroundColor="White"
+                       TextColor="#0D1B2A"
+                       PlaceholderColor="#90A4AE"
+                       BackgroundColor="#F5F5F5"
                        Margin="0,4,0,4">
                     <Entry.Triggers>
                         <DataTrigger TargetType="Entry"
@@ -91,12 +91,12 @@
                         </DataTrigger>
                         <DataTrigger TargetType="Entry"
                                      Binding="{Binding IsContrasenaActualValida}" Value="True">
-                            <Setter Property="BackgroundColor" Value="White"/>
+                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
                         </DataTrigger>
                     </Entry.Triggers>
                 </Entry>
                 <Label Text="La contraseña actual es incorrecta"
-                       TextColor="Red" FontSize="12" IsVisible="False">
+                       TextColor="#C62828" FontSize="12" IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding IsContrasenaActualValida}" Value="False">
@@ -110,13 +110,13 @@
                 </Label>
 
                 <!-- Nueva contraseña -->
-                <Label Text="Nueva contraseña" FontSize="14" TextColor="#607D8B" Margin="0,10,0,0"/>
+                <Label Text="Nueva contraseña" FontSize="14" TextColor="#546E7A" Margin="0,10,0,0"/>
                 <Entry Placeholder="Mínimo 6 caracteres"
                        Text="{Binding NuevaContrasena}"
                        IsPassword="True"
-                       TextColor="#1E1E1E"
-                       PlaceholderColor="#B3B3B3"
-                       BackgroundColor="White"
+                       TextColor="#0D1B2A"
+                       PlaceholderColor="#90A4AE"
+                       BackgroundColor="#F5F5F5"
                        Margin="0,4,0,4">
                     <Entry.Triggers>
                         <DataTrigger TargetType="Entry"
@@ -125,19 +125,19 @@
                         </DataTrigger>
                         <DataTrigger TargetType="Entry"
                                      Binding="{Binding IsNuevaContrasenaValida}" Value="True">
-                            <Setter Property="BackgroundColor" Value="White"/>
+                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
                         </DataTrigger>
                     </Entry.Triggers>
                 </Entry>
 
                 <!-- Confirmar nueva contraseña -->
-                <Label Text="Confirmar nueva contraseña" FontSize="14" TextColor="#607D8B" Margin="0,10,0,0"/>
+                <Label Text="Confirmar nueva contraseña" FontSize="14" TextColor="#546E7A" Margin="0,10,0,0"/>
                 <Entry Placeholder="Repite la nueva contraseña"
                        Text="{Binding ConfirmarNuevaContrasena}"
                        IsPassword="True"
-                       TextColor="#1E1E1E"
-                       PlaceholderColor="#B3B3B3"
-                       BackgroundColor="White"
+                       TextColor="#0D1B2A"
+                       PlaceholderColor="#90A4AE"
+                       BackgroundColor="#F5F5F5"
                        Margin="0,4,0,4">
                     <Entry.Triggers>
                         <DataTrigger TargetType="Entry"
@@ -146,12 +146,12 @@
                         </DataTrigger>
                         <DataTrigger TargetType="Entry"
                                      Binding="{Binding IsNuevaContrasenaValida}" Value="True">
-                            <Setter Property="BackgroundColor" Value="White"/>
+                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
                         </DataTrigger>
                     </Entry.Triggers>
                 </Entry>
                 <Label Text="Las contraseñas no coinciden o son muy cortas"
-                       TextColor="Red" FontSize="12" IsVisible="False">
+                       TextColor="#C62828" FontSize="12" IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding IsNuevaContrasenaValida}" Value="False">
@@ -166,7 +166,6 @@
 
                 <!-- Botón Guardar contraseña -->
                 <Button Text="Cambiar contraseña"
-                        BackgroundColor="#2C2C2C"
                         TextColor="White"
                         CornerRadius="8"
                         HeightRequest="50"
@@ -176,20 +175,20 @@
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsFormCambioValido}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#9E9E9E"/>
+                            <Setter Property="BackgroundColor" Value="#B0BEC5"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsFormCambioValido}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#2C2C2C"/>
+                            <Setter Property="BackgroundColor" Value="#006064"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
 
-                <BoxView HeightRequest="1" Color="#80DEEA"/>
+                <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
                 <!-- Cerrar sesión -->
                 <Button Text="Cerrar sesión"
-                        BackgroundColor="#E53935"
+                        BackgroundColor="#D32F2F"
                         TextColor="White"
                         CornerRadius="8"
                         HeightRequest="50"

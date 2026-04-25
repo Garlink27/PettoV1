@@ -1,17 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.MainPage"
              x:DataType="vm:MainViewModel"
-             BackgroundColor="#D5F9FF"
+             BackgroundColor="#FFFFFF"
              Title="Home">
 
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
         <!-- ── Header ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
             <ImageButton Grid.Column="0"
                          Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
@@ -22,11 +22,11 @@
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    FontSize="13"
-                   TextColor="#2C2C2C"/>
+                   TextColor="#006064"/>
             <ImageButton Grid.Column="2"
                          Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B0E0E6"
+                         BackgroundColor="#B2EBF2"
                          CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
@@ -36,17 +36,17 @@
             <VerticalStackLayout Padding="16" Spacing="20">
 
                 <!-- Mascota (círculo placeholder) -->
-                <Ellipse Fill="#B0E0E6"
+                <Ellipse Fill="#B2EBF2"
                          WidthRequest="280" HeightRequest="280"
                          HorizontalOptions="Center"/>
 
                 <!-- Puntos de cuidado -->
-                <Frame BackgroundColor="White"
+                <Frame BackgroundColor="#F5F5F5"
                        CornerRadius="20"
                        Padding="16,8"
                        HorizontalOptions="Center"
-                       HasShadow="True">
-                    <Label FontSize="14" TextColor="#2C2C2C">
+                       HasShadow="False">
+                    <Label FontSize="14" TextColor="#0D1B2A">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="Puntos de cuidado: " FontAttributes="Bold"/>

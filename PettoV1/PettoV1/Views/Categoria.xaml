@@ -5,14 +5,14 @@
              xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
              x:Class="PettoV1.Views.Categoria"
              x:DataType="vm:CategoriaViewModel"
-             BackgroundColor="#D5F9FF"
+             BackgroundColor="#FFFFFF"
              Title="Categoría">
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
         <!-- ── Header con botón regresar ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
             <ImageButton Grid.Column="0" Source="arrow_left_icon.png"
                          WidthRequest="40" HeightRequest="40"
                          BackgroundColor="Transparent"
@@ -20,10 +20,10 @@
             <Label Grid.Column="1"
                    Text="{Binding FechaHora}"
                    HorizontalOptions="Center" VerticalOptions="Center"
-                   FontSize="13" TextColor="#2C2C2C"/>
+                   FontSize="13" TextColor="#006064"/>
             <ImageButton Grid.Column="2" Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B0E0E6" CornerRadius="22"/>
+                         BackgroundColor="#B2EBF2" CornerRadius="22"/>
         </Grid>
 
         <!-- ── Contenido ── -->
@@ -35,7 +35,7 @@
                     <Label Grid.Column="0"
                            Text="{Binding Categoria.Nombre}"
                            FontSize="22" FontAttributes="Bold"
-                           TextColor="#2C2C2C"
+                           TextColor="#0D1B2A"
                            VerticalOptions="Center"/>
                     <ImageButton Grid.Column="1"
                                  Source="more_icon.png"
@@ -46,7 +46,7 @@
                 <!-- Tareas incompletas -->
                 <Label Text="Pendientes"
                        FontSize="16" FontAttributes="Bold"
-                       TextColor="#2C2C2C"/>
+                       TextColor="#0D1B2A"/>
 
                 <CollectionView ItemsSource="{Binding TareasIncompletas}"
                                 EmptyView="Sin tareas pendientes">
@@ -56,7 +56,7 @@
                                   Padding="0,6">
                                 <BoxView Grid.Column="0"
                                          WidthRequest="32" HeightRequest="32"
-                                         BackgroundColor="White"
+                                         BackgroundColor="#E0E0E0"
                                          CornerRadius="4">
                                     <BoxView.GestureRecognizers>
                                         <TapGestureRecognizer
@@ -67,7 +67,7 @@
                                 </BoxView>
                                 <Label Grid.Column="1"
                                        Text="{Binding Titulo}"
-                                       FontSize="15" TextColor="#2C2C2C"
+                                       FontSize="15" TextColor="#0D1B2A"
                                        VerticalOptions="Center"
                                        Margin="8,0">
                                     <Label.GestureRecognizers>
@@ -78,7 +78,7 @@
                                     </Label.GestureRecognizers>
                                 </Label>
                                 <BoxView Grid.ColumnSpan="3"
-                                         HeightRequest="1" Color="#B0E0E6"
+                                         HeightRequest="1" Color="#E0E0E0"
                                          VerticalOptions="End"/>
                             </Grid>
                         </DataTemplate>
@@ -88,7 +88,7 @@
                 <!-- Tareas completadas -->
                 <Label Text="Completadas"
                        FontSize="16" FontAttributes="Bold"
-                       TextColor="#2C2C2C"
+                       TextColor="#0D1B2A"
                        Margin="0,8,0,0"/>
 
                 <CollectionView ItemsSource="{Binding TareasCompletadas}"
@@ -111,12 +111,12 @@
                                 <Label Grid.Column="1"
                                        Text="{Binding Titulo}"
                                        FontSize="15"
-                                       TextColor="#9E9E9E"
+                                       TextColor="#78909C"
                                        TextDecorations="Strikethrough"
                                        VerticalOptions="Center"
                                        Margin="8,0"/>
                                 <BoxView Grid.ColumnSpan="2"
-                                         HeightRequest="1" Color="#B0E0E6"
+                                         HeightRequest="1" Color="#E0E0E0"
                                          VerticalOptions="End"/>
                             </Grid>
                         </DataTemplate>
@@ -128,7 +128,7 @@
 
         <!-- Botón flotante Agregar tarea -->
         <Ellipse Grid.Row="1"
-                 Fill="#2C2C2C"
+                 Fill="#006064"
                  WidthRequest="60" HeightRequest="60"
                  HorizontalOptions="End"
                  VerticalOptions="End"

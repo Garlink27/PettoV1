@@ -4,10 +4,16 @@ namespace PettoV1.Views
 {
     public partial class DetalleTarea : ContentPage
     {
-        public DetalleTarea(DetalleTareaViewModel vm)
+        public DetalleTarea()
         {
             InitializeComponent();
-            BindingContext = vm;
+
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext ??= IPlatformApplication.Current?.Services
+                              .GetService<DetalleTareaViewModel>();
         }
     }
 }

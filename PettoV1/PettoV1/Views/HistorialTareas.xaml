@@ -5,14 +5,14 @@
              xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
              x:Class="PettoV1.Views.HistorialTareas"
              x:DataType="vm:HistorialTareasViewModel"
-             BackgroundColor="#D5F9FF"
+             BackgroundColor="#FFFFFF"
              Title="Tu Archivo">
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
         <!-- ── Header ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
             <ImageButton Grid.Column="0" Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
                          BackgroundColor="Transparent"
@@ -20,10 +20,10 @@
             <Label Grid.Column="1"
                    Text="{Binding FechaHora}"
                    HorizontalOptions="Center" VerticalOptions="Center"
-                   FontSize="13" TextColor="#2C2C2C"/>
+                   FontSize="13" TextColor="#006064"/>
             <ImageButton Grid.Column="2" Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B0E0E6" CornerRadius="22"
+                         BackgroundColor="#B2EBF2" CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
 
@@ -32,7 +32,7 @@
 
             <!-- Barra de herramientas: calendario + filtro -->
             <Grid ColumnDefinitions="Auto,*,Auto"
-                  Padding="16,12" BackgroundColor="#D5F9FF">
+                  Padding="16,12" BackgroundColor="#F5F5F5">
                 <ImageButton Grid.Column="0"
                              Source="calendar_icon.png"
                              WidthRequest="36" HeightRequest="36"
@@ -41,7 +41,7 @@
                 <Label Grid.Column="1"
                        Text="Tu Archivo"
                        FontSize="20" FontAttributes="Bold"
-                       TextColor="#2C2C2C"
+                       TextColor="#0D1B2A"
                        VerticalOptions="Center"
                        HorizontalOptions="Center"/>
                 <ImageButton Grid.Column="2"
@@ -51,11 +51,11 @@
                              Command="{Binding FiltrarPorFechaCommand}"/>
             </Grid>
 
-            <!-- Selector de fecha (visible cuando MostrarCalendario = true) -->
+            <!-- Selector de fecha -->
             <DatePicker Date="{Binding FechaFiltro}"
                         Format="dd/MM/yyyy"
-                        BackgroundColor="White"
-                        TextColor="#2C2C2C"
+                        BackgroundColor="#F5F5F5"
+                        TextColor="#0D1B2A"
                         Margin="16,0,16,8"
                         IsVisible="{Binding MostrarCalendario}"/>
 
@@ -67,7 +67,7 @@
                                     EmptyView="No hay tareas completadas">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:TareaModel">
-                                <Frame BackgroundColor="White"
+                                <Frame BackgroundColor="#F5F5F5"
                                        CornerRadius="12"
                                        Padding="16"
                                        Margin="0,4"
@@ -76,18 +76,18 @@
                                         <Label Text="{Binding Titulo}"
                                                FontSize="16"
                                                FontAttributes="Bold"
-                                               TextColor="#2C2C2C"/>
+                                               TextColor="#0D1B2A"/>
                                         <Label Text="{Binding Descripcion}"
                                                FontSize="13"
-                                               TextColor="#607D8B"
+                                               TextColor="#546E7A"
                                                MaxLines="3"
                                                LineBreakMode="TailTruncation"/>
                                         <Label Text="{Binding FechaLimite, StringFormat='Completada: {0:dd/MM/yyyy}'}"
                                                FontSize="12"
-                                               TextColor="#9E9E9E"/>
+                                               TextColor="#78909C"/>
                                         <Label Text="{Binding Categoria.Nombre}"
                                                FontSize="12"
-                                               TextColor="#26C6DA"
+                                               TextColor="#006064"
                                                FontAttributes="Bold"/>
                                     </VerticalStackLayout>
                                 </Frame>

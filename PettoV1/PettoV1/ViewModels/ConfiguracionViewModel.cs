@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using PettoV1.ViewModels;
 
-namespace PettoV1.ViewModels
+namespace PettoV1.Views
 {
-    internal class ConfiguracionViewModel
+    public partial class ConfiguracionPage : ContentPage
     {
+        public ConfiguracionPage(ConfiguracionViewModel vm)
+        {
+            InitializeComponent();
+            BindingContext = vm;
+        }
     }
 }

@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PettoV1.App">
     <Application.Resources>
         <ResourceDictionary>
 
-            <!-- Colores del tema Petto -->
+            <!-- ── Colores base Petto (sin cambiar claves) ── -->
             <Color x:Key="PrimaryBackground">#D5F9FF</Color>
             <Color x:Key="PrimaryDark">#2C2C2C</Color>
             <Color x:Key="AccentCyan">#26C6DA</Color>
@@ -19,23 +19,108 @@
             <Color x:Key="CardBackground">White</Color>
             <Color x:Key="InvalidFieldBackground">#FFEBEE</Color>
 
-            <!-- Estilos globales -->
+            <!-- ── Nuevos tokens glassmorphism ── -->
+            <Color x:Key="GradientStart">#FF004D5E</Color>
+            <Color x:Key="GradientMid">#FF006064</Color>
+            <Color x:Key="GradientEnd">#FF0288D1</Color>
+            <Color x:Key="GlassCardBackground">#2EFFFFFF</Color>
+            <Color x:Key="GlassCardBorder">#59FFFFFF</Color>
+            <Color x:Key="GlassHeaderBackground">#1FFFFFFF</Color>
+            <Color x:Key="GlassInputBackground">#26FFFFFF</Color>
+            <Color x:Key="TextOnDark">#FFD5F9FF</Color>
+            <Color x:Key="TextOnDarkSecondary">#99D5F9FF</Color>
+            <Color x:Key="TabBarBackground">#4D000000</Color>
+            <Color x:Key="DangerGlass">#33E53935</Color>
+            <Color x:Key="DangerGlassBorder">#66E53935</Color>
+            <Color x:Key="DangerText">#FFFF6B6B</Color>
+            <Color x:Key="GlassInputInvalid">#4DE53935</Color>
+
+            <!-- ── Gradiente global de fondo ── -->
+            <LinearGradientBrush x:Key="PageGradient" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+                <GradientStop Color="{StaticResource GradientMid}"   Offset="0.4"/>
+                <GradientStop Color="{StaticResource GradientEnd}"   Offset="1.0"/>
+            </LinearGradientBrush>
+
+            <!-- ── Gradiente login (más claro) ── -->
+            <LinearGradientBrush x:Key="LoginGradient" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#FF0288D1" Offset="0.0"/>
+                <GradientStop Color="#FF26C6DA" Offset="0.5"/>
+                <GradientStop Color="#FFB2EBF2" Offset="1.0"/>
+            </LinearGradientBrush>
+
+            <!-- ── Gradiente botón primario ── -->
+            <LinearGradientBrush x:Key="PrimaryButtonGradient" StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="#FF0288D1" Offset="0"/>
+                <GradientStop Color="#FF26C6DA" Offset="1"/>
+            </LinearGradientBrush>
+
+            <!-- ── Estilo Frame glass (GlassCard) ── -->
+            <Style x:Key="GlassCard" TargetType="Frame">
+                <Setter Property="BackgroundColor"  Value="{StaticResource GlassCardBackground}"/>
+                <Setter Property="BorderColor"      Value="{StaticResource GlassCardBorder}"/>
+                <Setter Property="CornerRadius"     Value="14"/>
+                <Setter Property="Padding"          Value="12"/>
+                <Setter Property="HasShadow"        Value="False"/>
+            </Style>
+
+            <!-- ── Estilo botón primario ── -->
+            <Style x:Key="PrimaryButton" TargetType="Button">
+                <Setter Property="Background"       Value="{StaticResource PrimaryButtonGradient}"/>
+                <Setter Property="TextColor"        Value="White"/>
+                <Setter Property="CornerRadius"     Value="22"/>
+                <Setter Property="HeightRequest"    Value="48"/>
+                <Setter Property="FontAttributes"   Value="Bold"/>
+                <Setter Property="FontFamily"       Value="OpenSansRegular"/>
+                <Setter Property="FontSize"         Value="15"/>
+            </Style>
+
+            <!-- ── Estilo botón peligro (Cerrar sesión) ── -->
+            <Style x:Key="DangerButton" TargetType="Button">
+                <Setter Property="BackgroundColor"  Value="{StaticResource DangerGlass}"/>
+                <Setter Property="BorderColor"      Value="{StaticResource DangerGlassBorder}"/>
+                <Setter Property="BorderWidth"      Value="1"/>
+                <Setter Property="TextColor"        Value="{StaticResource DangerText}"/>
+                <Setter Property="CornerRadius"     Value="22"/>
+                <Setter Property="HeightRequest"    Value="48"/>
+                <Setter Property="FontAttributes"   Value="Bold"/>
+                <Setter Property="FontFamily"       Value="OpenSansRegular"/>
+                <Setter Property="FontSize"         Value="15"/>
+            </Style>
+
+            <!-- ── Estilo botón outline ── -->
+            <Style x:Key="OutlineButton" TargetType="Button">
+                <Setter Property="BackgroundColor"  Value="{StaticResource GlassHeaderBackground}"/>
+                <Setter Property="BorderColor"      Value="{StaticResource GlassCardBorder}"/>
+                <Setter Property="BorderWidth"      Value="1"/>
+                <Setter Property="TextColor"        Value="White"/>
+                <Setter Property="CornerRadius"     Value="22"/>
+                <Setter Property="HeightRequest"    Value="44"/>
+                <Setter Property="FontFamily"       Value="OpenSansRegular"/>
+                <Setter Property="FontSize"         Value="14"/>
+            </Style>
+
+            <!-- ── Estilos globales por defecto ── -->
             <Style TargetType="Button">
-                <Setter Property="FontFamily" Value="OpenSansRegular"/>
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="CornerRadius" Value="8"/>
-                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="FontFamily"       Value="OpenSansRegular"/>
+                <Setter Property="FontSize"         Value="15"/>
+                <Setter Property="CornerRadius"     Value="22"/>
+                <Setter Property="HeightRequest"    Value="48"/>
+                <Setter Property="TextColor"        Value="White"/>
+                <Setter Property="Background"       Value="{StaticResource PrimaryButtonGradient}"/>
             </Style>
 
             <Style TargetType="Entry">
-                <Setter Property="FontFamily" Value="OpenSansRegular"/>
-                <Setter Property="FontSize" Value="15"/>
-                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="FontFamily"       Value="OpenSansRegular"/>
+                <Setter Property="FontSize"         Value="15"/>
+                <Setter Property="BackgroundColor"  Value="Transparent"/>
+                <Setter Property="TextColor"        Value="White"/>
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextOnDarkSecondary}"/>
             </Style>
 
             <Style TargetType="Label">
-                <Setter Property="FontFamily" Value="OpenSansRegular"/>
-                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontFamily"       Value="OpenSansRegular"/>
+                <Setter Property="TextColor"        Value="{StaticResource TextOnDark}"/>
             </Style>
 
         </ResourceDictionary>

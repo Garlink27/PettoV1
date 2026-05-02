@@ -2,151 +2,146 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PettoV1.Views.Registro"
-             BackgroundColor="#FFFFFF"
              Title="Registro">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FF0288D1" Offset="0.0"/>
+            <GradientStop Color="#FF26C6DA" Offset="0.5"/>
+            <GradientStop Color="#FFB2EBF2" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <ScrollView>
         <VerticalStackLayout Spacing="0">
 
-            <Ellipse Fill="#B2EBF2"
-                     WidthRequest="130" HeightRequest="130"
-                     HorizontalOptions="Center"
-                     Margin="0,50,0,20"/>
-
-            <VerticalStackLayout Padding="24" Spacing="12">
-
-                <Label Text="Crear cuenta"
+            <!-- Hero superior -->
+            <VerticalStackLayout BackgroundColor="#990288D1"
+                                 Padding="24,50,24,20"
+                                 Spacing="4">
+                <Label Text="🐾 Crear cuenta"
                        FontSize="26" FontAttributes="Bold"
                        HorizontalOptions="Center"
-                       TextColor="#0D1B2A"
-                       Margin="0,0,0,8"/>
+                       TextColor="White"/>
+                <Label Text="Únete a Petto"
+                       FontSize="13"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource TextOnDarkSecondary}"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Padding="20,20" Spacing="12">
 
                 <!-- Correo -->
-                <Label Text="Correo" FontSize="16" TextColor="#37474F"/>
-                <Entry Placeholder="ejemplo@correo.com"
-                       Keyboard="Email"
-                       Text="{Binding Email}"
-                       TextColor="#0D1B2A"
-                       PlaceholderColor="#90A4AE"
-                       BackgroundColor="#F5F5F5">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsEmailValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                <Label Text="CORREO" FontSize="10" FontAttributes="Bold"
+                       TextColor="{StaticResource TextOnDarkSecondary}" CharacterSpacing="1.5"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}" StrokeThickness="1" Padding="4,0">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsEmailValid}" Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsEmailValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsEmailValid}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                         </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
+                    </Border.Triggers>
+                    <Entry Placeholder="ejemplo@correo.com" Keyboard="Email"
+                           Text="{Binding Email}" BackgroundColor="Transparent"/>
+                </Border>
                 <Label Text="Ingresa un correo electrónico válido"
-                       TextColor="#C62828" FontSize="12" IsVisible="False">
+                       TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsEmailValid}" Value="False">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsEmailValid}" Value="False">
                             <Setter Property="IsVisible" Value="True"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsEmailValid}" Value="True">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsEmailValid}" Value="True">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
 
                 <!-- Nombre de usuario -->
-                <Label Text="Nombre de usuario" FontSize="16" TextColor="#37474F"/>
-                <Entry Placeholder="Mínimo 3 caracteres"
-                       Text="{Binding NombreUsuario}"
-                       TextColor="#0D1B2A"
-                       PlaceholderColor="#90A4AE"
-                       BackgroundColor="#F5F5F5">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsUsernameValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                <Label Text="USUARIO" FontSize="10" FontAttributes="Bold"
+                       TextColor="{StaticResource TextOnDarkSecondary}" CharacterSpacing="1.5"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}" StrokeThickness="1" Padding="4,0">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsUsernameValid}" Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsUsernameValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsUsernameValid}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                         </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
+                    </Border.Triggers>
+                    <Entry Placeholder="Mínimo 3 caracteres"
+                           Text="{Binding NombreUsuario}" BackgroundColor="Transparent"/>
+                </Border>
                 <Label Text="El nombre debe tener al menos 3 caracteres"
-                       TextColor="#C62828" FontSize="12" IsVisible="False">
+                       TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsUsernameValid}" Value="False">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsUsernameValid}" Value="False">
                             <Setter Property="IsVisible" Value="True"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsUsernameValid}" Value="True">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsUsernameValid}" Value="True">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
 
                 <!-- Contraseña -->
-                <Label Text="Contraseña" FontSize="16" TextColor="#37474F"/>
-                <Entry Placeholder="Mínimo 6 caracteres con un número"
-                       IsPassword="True"
-                       Text="{Binding Contrasena}"
-                       TextColor="#0D1B2A"
-                       PlaceholderColor="#90A4AE"
-                       BackgroundColor="#F5F5F5">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsPasswordValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                <Label Text="CONTRASEÑA" FontSize="10" FontAttributes="Bold"
+                       TextColor="{StaticResource TextOnDarkSecondary}" CharacterSpacing="1.5"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}" StrokeThickness="1" Padding="4,0">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsPasswordValid}" Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsPasswordValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsPasswordValid}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                         </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
+                    </Border.Triggers>
+                    <Entry Placeholder="Mínimo 6 caracteres con un número"
+                           IsPassword="True" Text="{Binding Contrasena}" BackgroundColor="Transparent"/>
+                </Border>
                 <Label Text="Mínimo 6 caracteres y al menos un número"
-                       TextColor="#C62828" FontSize="12" IsVisible="False">
+                       TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsPasswordValid}" Value="False">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsPasswordValid}" Value="False">
                             <Setter Property="IsVisible" Value="True"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsPasswordValid}" Value="True">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsPasswordValid}" Value="True">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
 
                 <!-- Confirmar contraseña -->
-                <Label Text="Confirmar contraseña" FontSize="16" TextColor="#37474F"/>
-                <Entry Placeholder="Repite tu contraseña"
-                       IsPassword="True"
-                       Text="{Binding ConfirmarContrasena}"
-                       TextColor="#0D1B2A"
-                       PlaceholderColor="#90A4AE"
-                       BackgroundColor="#F5F5F5">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsConfirmPasswordValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                <Label Text="CONFIRMAR" FontSize="10" FontAttributes="Bold"
+                       TextColor="{StaticResource TextOnDarkSecondary}" CharacterSpacing="1.5"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}" StrokeThickness="1" Padding="4,0">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsConfirmPasswordValid}" Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Entry"
-                                     Binding="{Binding IsConfirmPasswordValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsConfirmPasswordValid}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                         </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
+                    </Border.Triggers>
+                    <Entry Placeholder="Repite tu contraseña"
+                           IsPassword="True" Text="{Binding ConfirmarContrasena}" BackgroundColor="Transparent"/>
+                </Border>
                 <Label Text="Las contraseñas no coinciden"
-                       TextColor="#C62828" FontSize="12" IsVisible="False">
+                       TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsConfirmPasswordValid}" Value="False">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsConfirmPasswordValid}" Value="False">
                             <Setter Property="IsVisible" Value="True"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsConfirmPasswordValid}" Value="True">
+                        <DataTrigger TargetType="Label" Binding="{Binding IsConfirmPasswordValid}" Value="True">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
@@ -154,37 +149,28 @@
 
                 <!-- Botón Registrarse -->
                 <Button Text="Registrarse"
-                        TextColor="White"
-                        CornerRadius="8"
-                        HeightRequest="50"
                         Command="{Binding RegistrarseCommand}"
                         Margin="0,8,0,0">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsFormValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#B0BEC5"/>
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding IsFormValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#006064"/>
-                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="BackgroundColor" Value="#80607D8B"/>
+                            <Setter Property="IsEnabled"       Value="False"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
 
-                <!-- Enlace Ingresar -->
+                <!-- Enlace Login -->
                 <Label HorizontalOptions="Center" Margin="0,4,0,0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="¿Ya tienes cuenta? "
-                                  TextColor="#37474F" FontSize="14"/>
+                                  TextColor="{StaticResource TextOnDarkSecondary}" FontSize="14"/>
                             <Span Text="Ingresar"
-                                  TextColor="#0277BD" FontSize="14"
-                                  TextDecorations="Underline">
+                                  TextColor="{StaticResource TextOnDark}" FontSize="14"
+                                  FontAttributes="Bold" TextDecorations="Underline">
                                 <Span.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding IrALoginCommand}"/>
+                                    <TapGestureRecognizer Command="{Binding IrALoginCommand}"/>
                                 </Span.GestureRecognizers>
                             </Span>
                         </FormattedString>

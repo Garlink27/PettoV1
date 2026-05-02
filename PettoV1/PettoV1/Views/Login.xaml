@@ -2,45 +2,68 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PettoV1.Views.Login"
-             BackgroundColor="#FFFFFF"
              Title="Login">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FF0288D1" Offset="0.0"/>
+            <GradientStop Color="#FF26C6DA" Offset="0.5"/>
+            <GradientStop Color="#FFB2EBF2" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <ScrollView>
         <VerticalStackLayout Spacing="0">
 
-            <Ellipse Fill="#B2EBF2"
-                     WidthRequest="130" HeightRequest="130"
-                     HorizontalOptions="Center"
-                     Margin="0,60,0,30"/>
-
-            <VerticalStackLayout Padding="24" Spacing="12">
-
-                <Label Text="Petto"
+            <!-- Hero superior -->
+            <VerticalStackLayout BackgroundColor="#990288D1"
+                                 Padding="24,60,24,28"
+                                 Spacing="4">
+                <Label Text="🐾 Petto"
                        FontSize="32" FontAttributes="Bold"
                        HorizontalOptions="Center"
-                       TextColor="#0D1B2A"/>
+                       TextColor="White"/>
+                <Label Text="Cuida a tu mascota"
+                       FontSize="13"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource TextOnDarkSecondary}"/>
+            </VerticalStackLayout>
+
+            <!-- Formulario glass -->
+            <VerticalStackLayout Padding="20,24" Spacing="14">
+
+                <Label Text="Iniciar sesión"
+                       FontSize="22" FontAttributes="Bold"
+                       TextColor="White"/>
 
                 <!-- Correo -->
-                <Label Text="Correo" FontSize="16" TextColor="#37474F"/>
-                <Entry Placeholder="ejemplo@correo.com"
-                       Keyboard="Email"
-                       Text="{Binding Email}"
-                       TextColor="#0D1B2A"
-                       PlaceholderColor="#90A4AE"
-                       BackgroundColor="#F5F5F5">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry"
+                <Label Text="CORREO" FontSize="10" FontAttributes="Bold"
+                       TextColor="{StaticResource TextOnDarkSecondary}"
+                       CharacterSpacing="1.5"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}"
+                        StrokeThickness="1"
+                        Padding="4,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border"
                                      Binding="{Binding IsEmailValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Entry"
+                        <DataTrigger TargetType="Border"
                                      Binding="{Binding IsEmailValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                         </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
+                    </Border.Triggers>
+                    <Entry Placeholder="ejemplo@correo.com"
+                           Keyboard="Email"
+                           Text="{Binding Email}"
+                           BackgroundColor="Transparent"/>
+                </Border>
                 <Label Text="Ingresa un correo electrónico válido"
-                       TextColor="#C62828" FontSize="12" IsVisible="False">
+                       TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding IsEmailValid}" Value="False">
@@ -54,26 +77,33 @@
                 </Label>
 
                 <!-- Contraseña -->
-                <Label Text="Contraseña" FontSize="16" TextColor="#37474F"/>
-                <Entry Placeholder="Mínimo 6 caracteres"
-                       IsPassword="True"
-                       Text="{Binding Contrasena}"
-                       TextColor="#0D1B2A"
-                       PlaceholderColor="#90A4AE"
-                       BackgroundColor="#F5F5F5">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry"
+                <Label Text="CONTRASEÑA" FontSize="10" FontAttributes="Bold"
+                       TextColor="{StaticResource TextOnDarkSecondary}"
+                       CharacterSpacing="1.5"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}"
+                        StrokeThickness="1"
+                        Padding="4,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border"
                                      Binding="{Binding IsPasswordValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Entry"
+                        <DataTrigger TargetType="Border"
                                      Binding="{Binding IsPasswordValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                         </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
+                    </Border.Triggers>
+                    <Entry Placeholder="Mínimo 6 caracteres"
+                           IsPassword="True"
+                           Text="{Binding Contrasena}"
+                           BackgroundColor="Transparent"/>
+                </Border>
                 <Label Text="La contraseña debe tener al menos 6 caracteres"
-                       TextColor="#C62828" FontSize="12" IsVisible="False">
+                       TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding IsPasswordValid}" Value="False">
@@ -88,21 +118,13 @@
 
                 <!-- Botón Entrar -->
                 <Button Text="Entrar"
-                        TextColor="White"
-                        CornerRadius="8"
-                        HeightRequest="50"
                         Command="{Binding IniciarSesionCommand}"
                         Margin="0,8,0,0">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsFormValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#B0BEC5"/>
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding IsFormValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#006064"/>
-                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="BackgroundColor" Value="#80607D8B"/>
+                            <Setter Property="IsEnabled"       Value="False"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
@@ -112,13 +134,13 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="¿No tienes cuenta? "
-                                  TextColor="#37474F" FontSize="14"/>
+                                  TextColor="{StaticResource TextOnDarkSecondary}" FontSize="14"/>
                             <Span Text="Registrarse"
-                                  TextColor="#0277BD" FontSize="14"
+                                  TextColor="{StaticResource TextOnDark}" FontSize="14"
+                                  FontAttributes="Bold"
                                   TextDecorations="Underline">
                                 <Span.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding IrARegistroCommand}"/>
+                                    <TapGestureRecognizer Command="{Binding IrARegistroCommand}"/>
                                 </Span.GestureRecognizers>
                             </Span>
                         </FormattedString>

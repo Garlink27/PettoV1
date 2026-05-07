@@ -15,7 +15,8 @@
         </LinearGradientBrush>
     </ContentPage.Background>
 
-    <Grid RowDefinitions="Auto,*" RowSpacing="0">
+    <!-- Row 0: Header  |  Row 1: Scrollable content + FAB  |  Row 2: Selection action bar -->
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
         <!-- ── Header glass ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
@@ -39,7 +40,7 @@
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="16" Spacing="16">
 
-                <!-- Título de categoría + menú opciones -->
+                <!-- Título de categoría + menú opciones (3 puntos) -->
                 <Grid ColumnDefinitions="*,Auto">
                     <Label Grid.Column="0"
                            Text="{Binding Categoria.Nombre}"
@@ -49,10 +50,11 @@
                     <ImageButton Grid.Column="1"
                                  Source="more_icon.png"
                                  WidthRequest="32" HeightRequest="32"
-                                 BackgroundColor="Transparent"/>
+                                 BackgroundColor="Transparent"
+                                 Command="{Binding AbrirMenuOpcionesCommand}"/>
                 </Grid>
 
-                <!-- Tareas pendientes -->
+                <!-- ── PENDIENTES ── -->
                 <Label Text="PENDIENTES"
                        FontSize="10" FontAttributes="Bold"
                        CharacterSpacing="1.5"
@@ -66,45 +68,84 @@
                                    FontSize="14" HorizontalOptions="Center" Margin="0,8"/>
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:TareaModel">
-                                <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,8">
-                                    <Border Grid.Column="0"
-                                            WidthRequest="28" HeightRequest="28"
-                                            BackgroundColor="{StaticResource GlassCardBackground}"
-                                            Stroke="{StaticResource AccentCyan}"
-                                            StrokeThickness="1.5">
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="6"/>
-                                        </Border.StrokeShape>
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}},
-                                                                  Path=ToggleCompletadaCommand}"
-                                                CommandParameter="{Binding .}"/>
-                                        </Border.GestureRecognizers>
-                                    </Border>
-                                    <Label Grid.Column="1"
+                            <DataTemplate x:DataType="vm:TareaSeleccionable">
+                                <Grid ColumnDefinitions="Auto,*"
+                                      RowDefinitions="Auto,Auto"
+                                      Padding="0,8,0,0">
+
+                                    <!-- Checkbox column — stacks normal toggle + selection checkbox -->
+                                    <Grid Grid.Column="0" Grid.Row="0"
+                                          WidthRequest="28" HeightRequest="28"
+                                          Margin="0,0,10,0"
+                                          VerticalOptions="Center">
+
+                                        <!-- Normal mode: tap = mark complete -->
+                                        <Border WidthRequest="28" HeightRequest="28"
+                                                BackgroundColor="{StaticResource GlassCardBackground}"
+                                                Stroke="{StaticResource AccentCyan}"
+                                                StrokeThickness="1.5"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=NoModoSeleccion}">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="6"/>
+                                            </Border.StrokeShape>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=ToggleCompletadaCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+                                        </Border>
+
+                                        <!-- Selection mode: tap = toggle selection -->
+                                        <Border WidthRequest="28" HeightRequest="28"
+                                                BackgroundColor="Transparent"
+                                                Stroke="{StaticResource AccentCyan}"
+                                                StrokeThickness="1.5"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=ModoSeleccion}">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="6"/>
+                                            </Border.StrokeShape>
+                                            <Border.Triggers>
+                                                <DataTrigger TargetType="Border"
+                                                             Binding="{Binding EsSeleccionada}" Value="True">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource AccentCyan}"/>
+                                                </DataTrigger>
+                                            </Border.Triggers>
+                                            <Label Text="✓" FontSize="13" TextColor="White"
+                                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                                   IsVisible="{Binding EsSeleccionada}"/>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=ToggleSeleccionTareaCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+                                        </Border>
+
+                                    </Grid>
+
+                                    <!-- Task title -->
+                                    <Label Grid.Column="1" Grid.Row="0"
                                            Text="{Binding Titulo}"
-                                           FontSize="15" TextColor="{StaticResource TextOnDark}"
-                                           VerticalOptions="Center" Margin="10,0">
+                                           FontSize="15"
+                                           TextColor="{StaticResource TextOnDark}"
+                                           VerticalOptions="Center">
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}},
-                                                                  Path=VerDetalleTareaCommand}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=VerDetalleTareaCommand}"
                                                 CommandParameter="{Binding .}"/>
                                         </Label.GestureRecognizers>
                                     </Label>
-                                    <BoxView Grid.ColumnSpan="3"
+
+                                    <!-- Row separator -->
+                                    <BoxView Grid.Row="1" Grid.ColumnSpan="2"
                                              HeightRequest="1"
-                                             BackgroundColor="{StaticResource GlassHeaderBackground}"
-                                             VerticalOptions="End"/>
+                                             BackgroundColor="{StaticResource GlassHeaderBackground}"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </Frame>
 
-                <!-- Tareas completadas -->
+                <!-- ── COMPLETADAS ── -->
                 <Label Text="COMPLETADAS"
                        FontSize="10" FontAttributes="Bold"
                        CharacterSpacing="1.5"
@@ -119,33 +160,79 @@
                                    FontSize="14" HorizontalOptions="Center" Margin="0,8"/>
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:TareaModel">
-                                <Grid ColumnDefinitions="Auto,*" Padding="0,8">
-                                    <Border Grid.Column="0"
-                                            WidthRequest="28" HeightRequest="28"
-                                            BackgroundColor="{StaticResource AccentCyan}"
-                                            StrokeThickness="0">
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="6"/>
-                                        </Border.StrokeShape>
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}},
-                                                                  Path=ToggleCompletadaCommand}"
-                                                CommandParameter="{Binding .}"/>
-                                        </Border.GestureRecognizers>
-                                    </Border>
-                                    <Label Grid.Column="1"
+                            <DataTemplate x:DataType="vm:TareaSeleccionable">
+                                <Grid ColumnDefinitions="Auto,*"
+                                      RowDefinitions="Auto,Auto"
+                                      Padding="0,8,0,0">
+
+                                    <!-- Checkbox column -->
+                                    <Grid Grid.Column="0" Grid.Row="0"
+                                          WidthRequest="28" HeightRequest="28"
+                                          Margin="0,0,10,0"
+                                          VerticalOptions="Center">
+
+                                        <!-- Normal mode: filled = completed, tap = mark incomplete -->
+                                        <Border WidthRequest="28" HeightRequest="28"
+                                                BackgroundColor="{StaticResource AccentCyan}"
+                                                StrokeThickness="0"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=NoModoSeleccion}">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="6"/>
+                                            </Border.StrokeShape>
+                                            <Label Text="✓" FontSize="13" TextColor="White"
+                                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=ToggleCompletadaCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+                                        </Border>
+
+                                        <!-- Selection mode: tap = toggle selection -->
+                                        <Border WidthRequest="28" HeightRequest="28"
+                                                BackgroundColor="Transparent"
+                                                Stroke="{StaticResource AccentCyan}"
+                                                StrokeThickness="1.5"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=ModoSeleccion}">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="6"/>
+                                            </Border.StrokeShape>
+                                            <Border.Triggers>
+                                                <DataTrigger TargetType="Border"
+                                                             Binding="{Binding EsSeleccionada}" Value="True">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource AccentCyan}"/>
+                                                </DataTrigger>
+                                            </Border.Triggers>
+                                            <Label Text="✓" FontSize="13" TextColor="White"
+                                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                                   IsVisible="{Binding EsSeleccionada}"/>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=ToggleSeleccionTareaCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+                                        </Border>
+
+                                    </Grid>
+
+                                    <!-- Task title (strikethrough) -->
+                                    <Label Grid.Column="1" Grid.Row="0"
                                            Text="{Binding Titulo}"
                                            FontSize="15"
                                            TextColor="{StaticResource TextOnDarkSecondary}"
                                            TextDecorations="Strikethrough"
-                                           VerticalOptions="Center"
-                                           Margin="10,0"/>
-                                    <BoxView Grid.ColumnSpan="2"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriaViewModel}}, Path=VerDetalleTareaCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+
+                                    <!-- Row separator -->
+                                    <BoxView Grid.Row="1" Grid.ColumnSpan="2"
                                              HeightRequest="1"
-                                             BackgroundColor="{StaticResource GlassHeaderBackground}"
-                                             VerticalOptions="End"/>
+                                             BackgroundColor="{StaticResource GlassHeaderBackground}"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -155,12 +242,13 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Botón flotante Agregar tarea -->
+        <!-- ── FAB agregar tarea (hidden in selection mode) ── -->
         <Ellipse Grid.Row="1"
                  WidthRequest="60" HeightRequest="60"
                  HorizontalOptions="End"
                  VerticalOptions="End"
-                 Margin="0,0,20,20">
+                 Margin="0,0,20,20"
+                 IsVisible="{Binding NoModoSeleccion}">
             <Ellipse.Fill>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{StaticResource AccentBlue}" Offset="0"/>
@@ -177,7 +265,48 @@
                HorizontalOptions="End"
                VerticalOptions="End"
                Margin="0,0,32,24"
-               InputTransparent="True"/>
+               InputTransparent="True"
+               IsVisible="{Binding NoModoSeleccion}"/>
+
+        <!-- ── Barra de acciones (solo visible en modo selección) ── -->
+        <Grid Grid.Row="2"
+              IsVisible="{Binding ModoSeleccion}"
+              BackgroundColor="{StaticResource GlassHeaderBackground}"
+              Padding="12,10">
+
+            <!-- Modo Eliminar / Incompleto / Completado → Cancelar + Aceptar -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8"
+                  IsVisible="{Binding MostrarBotonAceptar}">
+                <Button Grid.Column="0"
+                        Text="Cancelar"
+                        Style="{StaticResource OutlineButton}"
+                        Command="{Binding CancelarSeleccionCommand}"/>
+                <Button Grid.Column="1"
+                        Text="Aceptar"
+                        Command="{Binding AceptarSeleccionCommand}"/>
+            </Grid>
+
+            <!-- Modo Seleccionar todas → 3 acciones + Cancelar -->
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding MostrarBotonesMultiples}">
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6">
+                    <Button Grid.Column="0"
+                            Text="Eliminar"
+                            Style="{StaticResource DangerButton}"
+                            Command="{Binding EliminarSeleccionCommand}"/>
+                    <Button Grid.Column="1"
+                            Text="En curso"
+                            Command="{Binding IncompletoSeleccionCommand}"/>
+                    <Button Grid.Column="2"
+                            Text="Completar"
+                            Command="{Binding CompletoSeleccionCommand}"/>
+                </Grid>
+                <Button Text="Cancelar"
+                        Style="{StaticResource OutlineButton}"
+                        Command="{Binding CancelarSeleccionCommand}"/>
+            </VerticalStackLayout>
+
+        </Grid>
 
     </Grid>
 </ContentPage>

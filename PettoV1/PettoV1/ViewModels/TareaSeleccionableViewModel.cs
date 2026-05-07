@@ -7,7 +7,7 @@ namespace PettoV1.ViewModels
     /// Wrapper around TareaModel that adds UI-only selection state
     /// for the multi-select mode in CategoriaViewModel.
     /// </summary>
-    public partial class TareaSeleccionable : ObservableObject
+    public partial class TareaSeleccionableViewModel : ObservableObject
     {
         public TareaModel Tarea { get; }
 
@@ -17,7 +17,7 @@ namespace PettoV1.ViewModels
         public string Titulo => Tarea.Titulo;
         public bool Completada => Tarea.Completada;
 
-        public TareaSeleccionable(TareaModel tarea)
+        public TareaSeleccionableViewModel(TareaModel tarea)
         {
             Tarea = tarea;
         }

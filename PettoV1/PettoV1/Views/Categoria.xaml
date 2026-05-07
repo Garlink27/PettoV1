@@ -68,7 +68,7 @@
                                    FontSize="14" HorizontalOptions="Center" Margin="0,8"/>
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="vm:TareaSeleccionable">
+                            <DataTemplate x:DataType="vm:TareaSeleccionableViewModel">
                                 <Grid ColumnDefinitions="Auto,*"
                                       RowDefinitions="Auto,Auto"
                                       Padding="0,8,0,0">
@@ -110,7 +110,7 @@
                                                     <Setter Property="BackgroundColor" Value="{StaticResource AccentCyan}"/>
                                                 </DataTrigger>
                                             </Border.Triggers>
-                                            <Label Text="✓" FontSize="13" TextColor="White"
+                                            <Label Text="&#x2713;" FontSize="13" TextColor="White"
                                                    HorizontalOptions="Center" VerticalOptions="Center"
                                                    IsVisible="{Binding EsSeleccionada}"/>
                                             <Border.GestureRecognizers>
@@ -160,7 +160,7 @@
                                    FontSize="14" HorizontalOptions="Center" Margin="0,8"/>
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="vm:TareaSeleccionable">
+                            <DataTemplate x:DataType="vm:TareaSeleccionableViewModel">
                                 <Grid ColumnDefinitions="Auto,*"
                                       RowDefinitions="Auto,Auto"
                                       Padding="0,8,0,0">
@@ -179,7 +179,7 @@
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="6"/>
                                             </Border.StrokeShape>
-                                            <Label Text="✓" FontSize="13" TextColor="White"
+                                            <Label Text="&#x2713;" FontSize="13" TextColor="White"
                                                    HorizontalOptions="Center" VerticalOptions="Center"/>
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer
@@ -203,7 +203,7 @@
                                                     <Setter Property="BackgroundColor" Value="{StaticResource AccentCyan}"/>
                                                 </DataTrigger>
                                             </Border.Triggers>
-                                            <Label Text="✓" FontSize="13" TextColor="White"
+                                            <Label Text="&#x2713;" FontSize="13" TextColor="White"
                                                    HorizontalOptions="Center" VerticalOptions="Center"
                                                    IsVisible="{Binding EsSeleccionada}"/>
                                             <Border.GestureRecognizers>

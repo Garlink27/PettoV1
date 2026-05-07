@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using SharedResources.Data;
@@ -15,8 +15,8 @@ namespace PettoV1.ViewModels
         private readonly DataContext _dataContext;
 
         [ObservableProperty] private CategoriaModel _categoria = new();
-        [ObservableProperty] private ObservableCollection<TareaSeleccionable> _tareasIncompletas = new();
-        [ObservableProperty] private ObservableCollection<TareaSeleccionable> _tareasCompletadas = new();
+        [ObservableProperty] private ObservableCollection<TareaSeleccionableViewModel> _tareasIncompletas = new();
+        [ObservableProperty] private ObservableCollection<TareaSeleccionableViewModel> _tareasCompletadas = new();
         [ObservableProperty] private string _fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         [ObservableProperty] private bool _modoSeleccion;
         [ObservableProperty] private AccionSeleccion _accionActual = AccionSeleccion.Ninguna;
@@ -50,9 +50,9 @@ namespace PettoV1.ViewModels
             _ = CargarTareasAsync();
         }
 
-        // ──────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Data loading
-        // ──────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public async Task CargarTareasAsync()
         {
@@ -67,14 +67,14 @@ namespace PettoV1.ViewModels
                 .ToListAsync();
 
             foreach (var t in tareas.Where(t => !t.Completada))
-                TareasIncompletas.Add(new TareaSeleccionable(t));
+                TareasIncompletas.Add(new TareaSeleccionableViewModel(t));
             foreach (var t in tareas.Where(t => t.Completada))
-                TareasCompletadas.Add(new TareaSeleccionable(t));
+                TareasCompletadas.Add(new TareaSeleccionableViewModel(t));
         }
 
-        // ──────────────────────────────────────────────
-        // 3-dot menu → enter selection mode
-        // ──────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // 3-dot menu â†’ enter selection mode
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         [RelayCommand]
         public async Task AbrirMenuOpciones()
@@ -112,12 +112,12 @@ namespace PettoV1.ViewModels
             ModoSeleccion = true;
         }
 
-        // ──────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Selection actions
-        // ──────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         [RelayCommand]
-        public void ToggleSeleccionTarea(TareaSeleccionable tarea)
+        public void ToggleSeleccionTarea(TareaSeleccionableViewModel tarea)
         {
             tarea.EsSeleccionada = !tarea.EsSeleccionada;
         }
@@ -185,9 +185,9 @@ namespace PettoV1.ViewModels
             await CargarTareasAsync();
         }
 
-        // ──────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Normal (non-selection) commands
-        // ──────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         [RelayCommand]
         public async Task AgregarTarea()
@@ -206,7 +206,7 @@ namespace PettoV1.ViewModels
         }
 
         [RelayCommand]
-        public async Task VerDetalleTarea(TareaSeleccionable tarea)
+        public async Task VerDetalleTarea(TareaSeleccionableViewModel tarea)
         {
             if (ModoSeleccion)
             {
@@ -219,7 +219,7 @@ namespace PettoV1.ViewModels
         }
 
         [RelayCommand]
-        public async Task ToggleCompletada(TareaSeleccionable tarea)
+        public async Task ToggleCompletada(TareaSeleccionableViewModel tarea)
         {
             if (ModoSeleccion)
             {

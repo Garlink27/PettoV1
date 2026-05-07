@@ -1,9 +1,20 @@
-namespace PettoV1.Pages;
+using PettoV1.ViewModels;
 
-public partial class Configuracion : ContentPage
+namespace PettoV1.Views
 {
-	public Configuracion()
-	{
-		InitializeComponent();
-	}
+    public partial class Configuracion : ContentPage
+    {
+        public Configuracion( )
+        {
+            InitializeComponent();        
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext ??= IPlatformApplication.Current?.Services
+                              .GetService<ConfiguracionViewModel>();
+        }
+
+    }
 }

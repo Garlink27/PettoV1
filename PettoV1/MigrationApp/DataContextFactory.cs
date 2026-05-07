@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using SharedResources.Data;
 
 namespace MigrationApp
 {
-    internal class DataContextFactory
+    public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
     {
+        public DataContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
+            optionsBuilder.UseSqlite("Data Source=petto.db");
+            return new DataContext(optionsBuilder.Options);
+        }
     }
 }

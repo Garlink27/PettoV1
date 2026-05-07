@@ -1,9 +1,19 @@
-namespace PettoV1.Views;
+using PettoV1.ViewModels;
 
-public partial class Registro : ContentPage
+namespace PettoV1.Views
 {
-	public Registro()
-	{
-		InitializeComponent();
-	}
+    public partial class Registro : ContentPage
+    {
+        public Registro()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext ??= IPlatformApplication.Current?.Services
+                              .GetService<RegistroViewModel>();
+        }
+    }
 }

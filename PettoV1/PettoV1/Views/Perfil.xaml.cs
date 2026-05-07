@@ -1,9 +1,22 @@
-namespace PettoV1.Pages;
+using PettoV1.ViewModels;
 
-public partial class Perfil : ContentPage
+namespace PettoV1.Views
 {
-	public Perfil()
-	{
-		InitializeComponent();
-	}
+    public partial class Perfil : ContentPage
+    {
+        private readonly PerfilViewModel _vm;
+
+        public Perfil(PerfilViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
+            BindingContext = vm;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _vm.InicializarAsync();
+        }
+    }
 }

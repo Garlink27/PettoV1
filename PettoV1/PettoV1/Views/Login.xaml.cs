@@ -1,9 +1,26 @@
-namespace PettoV1.Views;
+using PettoV1.ViewModels;
 
-public partial class Login : ContentPage
+namespace PettoV1.Views
 {
-	public Login()
-	{
-		InitializeComponent();
-	}
+    public partial class Login : ContentPage
+    {
+        public Login()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (BindingContext is null)
+            {
+                var vm = IPlatformApplication.Current?.Services
+                         .GetService<LoginViewModel>();
+
+
+                BindingContext = vm;
+            }
+        }
+    }
 }

@@ -1,9 +1,22 @@
-namespace PettoV1.Pages;
+using PettoV1.ViewModels;
 
-public partial class Estadisticas : ContentPage
+namespace PettoV1.Views
 {
-	public Estadisticas()
-	{
-		InitializeComponent();
-	}
+    public partial class Estadisticas : ContentPage
+    {
+        private readonly EstadisticasViewModel _vm;
+
+        public Estadisticas(EstadisticasViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
+            BindingContext = vm;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _vm.InicializarAsync();
+        }
+    }
 }

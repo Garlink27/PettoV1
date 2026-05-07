@@ -60,7 +60,8 @@
                 </Frame>
 
                 <!-- Tarjetas de resumen -->
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto"
+                      ColumnSpacing="12" RowSpacing="12">
 
                     <!-- Total -->
                     <Frame Grid.Column="0"

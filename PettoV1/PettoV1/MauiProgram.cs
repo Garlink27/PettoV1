@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PettoV1.Services;
 using PettoV1.ViewModels;
 using PettoV1.Views;
 using SharedResources.Data;
@@ -22,6 +23,10 @@ namespace PettoV1
 
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "petto.db");
             builder.Services.AddDbContext<DataContext>(options => options.UseSqlite($"Filename={dbPath}"));
+
+            // Services
+            builder.Services.AddSingleton<HttpClient>();
+            builder.Services.AddSingleton<APIService>();
 
             // ViewModels
             builder.Services.AddTransient<LoginViewModel>();

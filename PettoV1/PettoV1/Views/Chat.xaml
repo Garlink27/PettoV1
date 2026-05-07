@@ -18,7 +18,7 @@
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
         <!-- ── Header glass ── -->
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto"
               Padding="12,44,12,10"
               BackgroundColor="{StaticResource GlassHeaderBackground}">
             <ImageButton Grid.Column="0" Source="menu_icon.png"
@@ -34,6 +34,17 @@
                          BackgroundColor="{StaticResource GlassCardBackground}"
                          CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
+            <!-- Botón 3 puntos -->
+            <Button Grid.Column="3"
+                    Text="⋮"
+                    FontSize="20"
+                    WidthRequest="40" HeightRequest="40"
+                    CornerRadius="20"
+                    Padding="0"
+                    Margin="6,0,0,0"
+                    BackgroundColor="{StaticResource GlassCardBackground}"
+                    TextColor="White"
+                    Command="{Binding AbrirMenuChatCommand}"/>
         </Grid>
 
         <!-- ── Lista de mensajes ── -->

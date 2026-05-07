@@ -1,6 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using PettoV1.Services;
 using SharedResources.Data;
 using SharedResources.Models;
 using System.Collections.ObjectModel;
@@ -10,6 +11,10 @@ namespace PettoV1.ViewModels
     public partial class ChatViewModel : ObservableObject
     {
         private readonly DataContext _dataContext;
+        private readonly APIService  _apiService;
+
+        // Máximo de mensajes anteriores que se envían como contexto a Gemini
+        private const int MaxHistorialContexto = 10;
 
         [ObservableProperty] private ObservableCollection<MensajeModel> _mensajes = new();
         [ObservableProperty]
@@ -17,11 +22,17 @@ namespace PettoV1.ViewModels
         private string _mensajeActual = string.Empty;
         [ObservableProperty] private string _fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
-        public bool PuedeEnviar => !string.IsNullOrWhiteSpace(MensajeActual);
+        /// <summary>Indica que la IA está generando una respuesta (muestra indicador de espera).</summary>
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(PuedeEnviar))]
+        private bool _estaRespondiendo;
 
-        public ChatViewModel(DataContext dataContext)
+        public bool PuedeEnviar => !string.IsNullOrWhiteSpace(MensajeActual) && !EstaRespondiendo;
+
+        public ChatViewModel(DataContext dataContext, APIService apiService)
         {
             _dataContext = dataContext;
+            _apiService  = apiService;
         }
 
         public async Task InicializarAsync()
@@ -34,6 +45,7 @@ namespace PettoV1.ViewModels
                 .Where(m => m.UsuarioId == usuarioId)
                 .OrderBy(m => m.FechaHora)
                 .ToListAsync();
+
             foreach (var m in historial) Mensajes.Add(m);
         }
 
@@ -42,35 +54,52 @@ namespace PettoV1.ViewModels
         {
             if (!PuedeEnviar) return;
 
-            int usuarioId = Preferences.Get("UsuarioId", 0);
+            int    usuarioId  = Preferences.Get("UsuarioId", 0);
+            string textoEnv   = MensajeActual.Trim();
+            MensajeActual     = string.Empty;
 
-            var mensaje = new MensajeModel
+            // 1. Guardar y mostrar el mensaje del usuario
+            var mensajeUsuario = new MensajeModel
             {
-                Contenido = MensajeActual,
+                Contenido    = textoEnv,
                 EsRespuestaIA = false,
-                FechaHora = DateTime.Now,
-                UsuarioId = usuarioId
+                FechaHora    = DateTime.Now,
+                UsuarioId    = usuarioId
             };
-
-            await _dataContext.Mensajes.AddAsync(mensaje);
+            await _dataContext.Mensajes.AddAsync(mensajeUsuario);
             await _dataContext.SaveChangesAsync();
-            Mensajes.Add(mensaje);
+            Mensajes.Add(mensajeUsuario);
 
-            string texto = MensajeActual;
-            MensajeActual = string.Empty;
+            // 2. Construir historial de contexto (últimos N mensajes)
+            var historialContexto = Mensajes
+                .TakeLast(MaxHistorialContexto)
+                .Where(m => m != mensajeUsuario)   // Excluir el que acabamos de agregar
+                .Select(m => new MensajeHistorial(m.EsRespuestaIA, m.Contenido))
+                .ToList();
 
-            await Task.Delay(600);
-
-            var respuestaIA = new MensajeModel
+            // 3. Llamar a Gemini
+            EstaRespondiendo = true;
+            string respuestaTexto;
+            try
             {
-                Contenido = $"Recibí tu mensaje: \"{texto}\". Próximamente tendrás respuestas inteligentes.",
+                respuestaTexto = await _apiService.EnviarMensajeAsync(textoEnv, historialContexto);
+            }
+            finally
+            {
+                EstaRespondiendo = false;
+            }
+
+            // 4. Guardar y mostrar la respuesta de la IA
+            var mensajeIA = new MensajeModel
+            {
+                Contenido    = respuestaTexto,
                 EsRespuestaIA = true,
-                FechaHora = DateTime.Now,
-                UsuarioId = usuarioId
+                FechaHora    = DateTime.Now,
+                UsuarioId    = usuarioId
             };
-            await _dataContext.Mensajes.AddAsync(respuestaIA);
+            await _dataContext.Mensajes.AddAsync(mensajeIA);
             await _dataContext.SaveChangesAsync();
-            Mensajes.Add(respuestaIA);
+            Mensajes.Add(mensajeIA);
         }
 
         [RelayCommand]
@@ -78,5 +107,35 @@ namespace PettoV1.ViewModels
 
         [RelayCommand]
         public async Task IrAPerfil() => await Shell.Current.GoToAsync("Perfil");
+
+        [RelayCommand]
+        public async Task AbrirMenuChat()
+        {
+            string accion = await Shell.Current.DisplayActionSheet(
+                "Opciones", "Cancelar", null,
+                "🗑️ Limpiar chat");
+
+            if (accion == "🗑️ Limpiar chat")
+                await LimpiarChatAsync();
+        }
+
+        private async Task LimpiarChatAsync()
+        {
+            bool confirmar = await Shell.Current.DisplayAlert(
+                "Limpiar chat",
+                "¿Eliminar todos los mensajes? Esta acción no se puede deshacer.",
+                "Eliminar", "Cancelar");
+
+            if (!confirmar) return;
+
+            int usuarioId = Preferences.Get("UsuarioId", 0);
+            var mensajes = await _dataContext.Mensajes
+                .Where(m => m.UsuarioId == usuarioId)
+                .ToListAsync();
+
+            _dataContext.Mensajes.RemoveRange(mensajes);
+            await _dataContext.SaveChangesAsync();
+            Mensajes.Clear();
+        }
     }
 }

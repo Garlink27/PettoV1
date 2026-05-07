@@ -7,25 +7,50 @@ using System.Collections.ObjectModel;
 
 namespace PettoV1.ViewModels
 {
+    public enum AccionSeleccion { Ninguna, Eliminar, Incompleto, Completo, SeleccionarTodas }
+
     [QueryProperty(nameof(Categoria), "Categoria")]
     public partial class CategoriaViewModel : ObservableObject
     {
         private readonly DataContext _dataContext;
 
         [ObservableProperty] private CategoriaModel _categoria = new();
-        [ObservableProperty] private ObservableCollection<TareaModel> _tareasIncompletas = new();
-        [ObservableProperty] private ObservableCollection<TareaModel> _tareasCompletadas = new();
+        [ObservableProperty] private ObservableCollection<TareaSeleccionableViewModel> _tareasIncompletas = new();
+        [ObservableProperty] private ObservableCollection<TareaSeleccionableViewModel> _tareasCompletadas = new();
         [ObservableProperty] private string _fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        [ObservableProperty] private bool _modoSeleccion;
+        [ObservableProperty] private AccionSeleccion _accionActual = AccionSeleccion.Ninguna;
+
+        // Computed props consumed by XAML bindings
+        public bool NoModoSeleccion => !ModoSeleccion;
+        public bool MostrarBotonAceptar => ModoSeleccion && AccionActual != AccionSeleccion.SeleccionarTodas;
+        public bool MostrarBotonesMultiples => ModoSeleccion && AccionActual == AccionSeleccion.SeleccionarTodas;
 
         public CategoriaViewModel(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
+        // Notify dependents when mode changes
+        partial void OnModoSeleccionChanged(bool value)
+        {
+            OnPropertyChanged(nameof(NoModoSeleccion));
+            OnPropertyChanged(nameof(MostrarBotonAceptar));
+            OnPropertyChanged(nameof(MostrarBotonesMultiples));
+        }
+
+        partial void OnAccionActualChanged(AccionSeleccion value)
+        {
+            OnPropertyChanged(nameof(MostrarBotonAceptar));
+            OnPropertyChanged(nameof(MostrarBotonesMultiples));
+        }
+
         partial void OnCategoriaChanged(CategoriaModel value)
         {
             _ = CargarTareasAsync();
         }
+
+      
 
         public async Task CargarTareasAsync()
         {
@@ -40,10 +65,121 @@ namespace PettoV1.ViewModels
                 .ToListAsync();
 
             foreach (var t in tareas.Where(t => !t.Completada))
-                TareasIncompletas.Add(t);
+                TareasIncompletas.Add(new TareaSeleccionableViewModel(t));
             foreach (var t in tareas.Where(t => t.Completada))
-                TareasCompletadas.Add(t);
+                TareasCompletadas.Add(new TareaSeleccionableViewModel(t));
         }
+
+        
+
+        [RelayCommand]
+        public async Task AbrirMenuOpciones()
+        {
+            string? opcion = await Shell.Current.DisplayActionSheet(
+                "Opciones", "Cancelar", null,
+                "Eliminar", "Incompleto", "Completado", "Seleccionar todas");
+
+            switch (opcion)
+            {
+                case "Eliminar":
+                    EntrarModoSeleccion(AccionSeleccion.Eliminar);
+                    break;
+                case "Incompleto":
+                    EntrarModoSeleccion(AccionSeleccion.Incompleto);
+                    break;
+                case "Completado":
+                    EntrarModoSeleccion(AccionSeleccion.Completo);
+                    break;
+                case "Seleccionar todas":
+                    EntrarModoSeleccion(AccionSeleccion.SeleccionarTodas);
+                    // Pre-select everything
+                    foreach (var t in TareasIncompletas) t.EsSeleccionada = true;
+                    foreach (var t in TareasCompletadas) t.EsSeleccionada = true;
+                    break;
+            }
+        }
+
+        private void EntrarModoSeleccion(AccionSeleccion accion)
+        {
+            // Clear any previous selection
+            foreach (var t in TareasIncompletas) t.EsSeleccionada = false;
+            foreach (var t in TareasCompletadas) t.EsSeleccionada = false;
+            AccionActual = accion;
+            ModoSeleccion = true;
+        }
+
+        
+
+        [RelayCommand]
+        public void ToggleSeleccionTarea(TareaSeleccionableViewModel tarea)
+        {
+            tarea.EsSeleccionada = !tarea.EsSeleccionada;
+        }
+
+        [RelayCommand]
+        public void CancelarSeleccion()
+        {
+            ModoSeleccion = false;
+            AccionActual = AccionSeleccion.Ninguna;
+        }
+
+        /// <summary>Called by the single "Aceptar" button in Eliminar/Incompleto/Completo modes.</summary>
+        [RelayCommand]
+        public async Task AceptarSeleccion() => await EjecutarAccionAsync(AccionActual);
+
+        /// <summary>Called by the "Eliminar" button in Seleccionar-todas mode.</summary>
+        [RelayCommand]
+        public async Task EliminarSeleccion() => await EjecutarAccionAsync(AccionSeleccion.Eliminar);
+
+        /// <summary>Called by the "En curso" button in Seleccionar-todas mode.</summary>
+        [RelayCommand]
+        public async Task IncompletoSeleccion() => await EjecutarAccionAsync(AccionSeleccion.Incompleto);
+
+        /// <summary>Called by the "Completar" button in Seleccionar-todas mode.</summary>
+        [RelayCommand]
+        public async Task CompletoSeleccion() => await EjecutarAccionAsync(AccionSeleccion.Completo);
+
+        private async Task EjecutarAccionAsync(AccionSeleccion accion)
+        {
+            var seleccionadas = TareasIncompletas
+                .Concat(TareasCompletadas)
+                .Where(t => t.EsSeleccionada)
+                .ToList();
+
+            if (seleccionadas.Count == 0)
+            {
+                await Shell.Current.DisplayAlert("Aviso", "No hay tareas seleccionadas.", "OK");
+                return;
+            }
+
+            foreach (var sel in seleccionadas)
+            {
+                var entidad = await _dataContext.Tareas.FindAsync(sel.Tarea.Id);
+                if (entidad is null) continue;
+
+                switch (accion)
+                {
+                    case AccionSeleccion.Eliminar:
+                        _dataContext.Tareas.Remove(entidad);
+                        break;
+                    case AccionSeleccion.Incompleto:
+                        entidad.Completada = false;
+                        _dataContext.Tareas.Update(entidad);
+                        break;
+                    case AccionSeleccion.Completo:
+                        entidad.Completada = true;
+                        _dataContext.Tareas.Update(entidad);
+                        break;
+                }
+            }
+
+            await _dataContext.SaveChangesAsync();
+            ModoSeleccion = false;
+            AccionActual = AccionSeleccion.Ninguna;
+            await CargarTareasAsync();
+        }
+
+      
 
         [RelayCommand]
         public async Task AgregarTarea()
@@ -62,37 +198,31 @@ namespace PettoV1.ViewModels
         }
 
         [RelayCommand]
-        public async Task VerDetalleTarea(TareaModel tarea)
+        public async Task VerDetalleTarea(TareaSeleccionableViewModel tarea)
         {
+            if (ModoSeleccion)
+            {
+                tarea.EsSeleccionada = !tarea.EsSeleccionada;
+                return;
+            }
             await Shell.Current.GoToAsync(
                 "DetalleTarea",
-                new Dictionary<string, object> { ["Tarea"] = tarea });
+                new Dictionary<string, object> { ["Tarea"] = tarea.Tarea });
         }
 
         [RelayCommand]
-        public async Task ToggleCompletada(TareaModel tarea)
+        public async Task ToggleCompletada(TareaSeleccionableViewModel tarea)
         {
-            var entidad = await _dataContext.Tareas.FindAsync(tarea.Id);
+            if (ModoSeleccion)
+            {
+                tarea.EsSeleccionada = !tarea.EsSeleccionada;
+                return;
+            }
+            var entidad = await _dataContext.Tareas.FindAsync(tarea.Tarea.Id);
             if (entidad is not null)
             {
                 entidad.Completada = !entidad.Completada;
                 _dataContext.Tareas.Update(entidad);
-                await _dataContext.SaveChangesAsync();
-                await CargarTareasAsync();
-            }
-        }
-
-        [RelayCommand]
-        public async Task EliminarTarea(TareaModel tarea)
-        {
-            string resp = await Shell.Current.DisplayActionSheet(
-                "¿Eliminar tarea?", "Cancelar", "Eliminar");
-            if (resp != "Eliminar") return;
-
-            var entidad = await _dataContext.Tareas.FindAsync(tarea.Id);
-            if (entidad is not null)
-            {
-                _dataContext.Tareas.Remove(entidad);
                 await _dataContext.SaveChangesAsync();
                 await CargarTareasAsync();
             }

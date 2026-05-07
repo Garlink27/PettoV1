@@ -4,13 +4,22 @@
              xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.DetalleTarea"
              x:DataType="vm:DetalleTareaViewModel"
-             BackgroundColor="#FFFFFF"
              Title="Detalle de Tarea">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource GradientMid}"   Offset="0.4"/>
+            <GradientStop Color="{StaticResource GradientEnd}"   Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
+        <!-- ── Header glass ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
+              Padding="12,44,12,10"
+              BackgroundColor="{StaticResource GlassHeaderBackground}">
             <ImageButton Grid.Column="0" Source="arrow_left_icon.png"
                          WidthRequest="40" HeightRequest="40"
                          BackgroundColor="Transparent"
@@ -18,7 +27,7 @@
             <Label Grid.Column="1"
                    Text="{Binding FechaLimite, StringFormat='{0:dd/MM/yyyy}'}"
                    HorizontalOptions="Center" VerticalOptions="Center"
-                   FontSize="13" TextColor="#006064"/>
+                   FontSize="13" TextColor="{StaticResource TextOnDarkSecondary}"/>
             <ImageButton Grid.Column="2" Source="more_icon.png"
                          WidthRequest="32" HeightRequest="32"
                          BackgroundColor="Transparent"
@@ -28,79 +37,99 @@
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="20" Spacing="14">
 
-                <Label Text="Título de la tarea" FontSize="14" TextColor="#546E7A"/>
-                <Entry Placeholder="Escribe el título"
-                       Text="{Binding Titulo}"
-                       TextColor="#0D1B2A"
-                       PlaceholderColor="#90A4AE"
-                       FontSize="18"
-                       BackgroundColor="#F5F5F5">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry" Binding="{Binding IsTituloValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#FFEBEE"/>
+                <!-- Título -->
+                <Label Text="Título de la tarea" FontSize="13"
+                       TextColor="{StaticResource TextOnDarkSecondary}"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}"
+                        StrokeThickness="1" Padding="4,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsTituloValid}" Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
                         </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsTituloValid}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
+                        </DataTrigger>
+                    </Border.Triggers>
+                    <Entry Placeholder="Escribe el título"
+                           Text="{Binding Titulo}"
+                           FontSize="18"
+                           BackgroundColor="Transparent"/>
+                </Border>
 
-                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource GlassHeaderBackground}"/>
 
-                <Label Text="Fecha límite" FontSize="14" TextColor="#546E7A"/>
-                <DatePicker Date="{Binding FechaLimite}"
-                            Format="dd/MM/yyyy"
-                            TextColor="#0D1B2A"
-                            BackgroundColor="#F5F5F5"/>
+                <!-- Fecha límite -->
+                <Label Text="Fecha límite" FontSize="13"
+                       TextColor="{StaticResource TextOnDarkSecondary}"/>
+                <Frame Style="{StaticResource GlassCard}" Padding="12,4">
+                    <DatePicker Date="{Binding FechaLimite}"
+                                Format="dd/MM/yyyy"
+                                TextColor="{StaticResource TextOnDark}"
+                                BackgroundColor="Transparent"/>
+                </Frame>
 
-                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource GlassHeaderBackground}"/>
 
-                <Label Text="Categoría" FontSize="14" TextColor="#546E7A"/>
-                <Picker Title="Selecciona una categoría"
-                        ItemsSource="{Binding Categorias}"
-                        ItemDisplayBinding="{Binding Nombre}"
-                        SelectedItem="{Binding CategoriaSeleccionada}"
-                        TextColor="#0D1B2A"
-                        BackgroundColor="#F5F5F5" />
+                <!-- Categoría -->
+                <Label Text="Categoría" FontSize="13"
+                       TextColor="{StaticResource TextOnDarkSecondary}"/>
+                <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                        Stroke="{StaticResource GlassCardBorder}"
+                        StrokeThickness="1" Padding="4,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Picker Title="Selecciona una categoría"
+                            ItemsSource="{Binding Categorias}"
+                            ItemDisplayBinding="{Binding Nombre}"
+                            SelectedItem="{Binding CategoriaSeleccionada}"
+                            TextColor="{StaticResource TextOnDark}"
+                            BackgroundColor="Transparent"/>
+                </Border>
 
-                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource GlassHeaderBackground}"/>
 
-                <Label Text="Descripción" FontSize="14" TextColor="#546E7A"/>
-                <Editor Placeholder="Agrega una descripción..."
-                        Text="{Binding Descripcion}"
-                        TextColor="#0D1B2A"
-                        PlaceholderColor="#90A4AE"
-                        AutoSize="TextChanges"
-                        MinimumHeightRequest="80"
-                        BackgroundColor="#F5F5F5"/>
+                <!-- Descripción -->
+                <Label Text="Descripción" FontSize="13"
+                       TextColor="{StaticResource TextOnDarkSecondary}"/>
+                <Frame Style="{StaticResource GlassCard}" Padding="12,8">
+                    <Editor Placeholder="Agrega una descripción..."
+                            Text="{Binding Descripcion}"
+                            AutoSize="TextChanges"
+                            MinimumHeightRequest="80"
+                            BackgroundColor="Transparent"/>
+                </Frame>
 
-                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource GlassHeaderBackground}"/>
 
+                <!-- Completada -->
                 <Grid ColumnDefinitions="*,Auto">
                     <Label Grid.Column="0" Text="Marcar como completada"
-                           FontSize="15" TextColor="#0D1B2A" VerticalOptions="Center"/>
-                    <Switch Grid.Column="1" IsToggled="{Binding Completada}" OnColor="#006064"/>
+                           FontSize="15" TextColor="{StaticResource TextOnDark}"
+                           VerticalOptions="Center"/>
+                    <Switch Grid.Column="1" IsToggled="{Binding Completada}"
+                            OnColor="{StaticResource AccentCyan}"/>
                 </Grid>
 
+                <!-- Guardar -->
                 <Button Text="Guardar tarea"
-                        TextColor="White"
-                        CornerRadius="8"
-                        HeightRequest="50"
                         IsEnabled="{Binding IsFormValid}"
                         Command="{Binding GuardarTareaCommand}"
                         Margin="0,16,0,0">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsFormValid}" Value="False">
-                            <Setter Property="BackgroundColor" Value="#B0BEC5"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsFormValid}" Value="True">
-                            <Setter Property="BackgroundColor" Value="#006064"/>
+                            <Setter Property="BackgroundColor" Value="#80607D8B"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
 
+                <!-- Eliminar -->
                 <Button Text="Eliminar tarea"
-                        BackgroundColor="#D32F2F"
-                        TextColor="White"
-                        CornerRadius="8"
-                        HeightRequest="50"
+                        Style="{StaticResource DangerButton}"
                         IsVisible="{Binding EsModoEdicion}"
                         Command="{Binding EliminarTareaCommand}"/>
 

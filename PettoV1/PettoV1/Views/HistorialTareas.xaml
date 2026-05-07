@@ -5,14 +5,22 @@
              xmlns:models="clr-namespace:SharedResources.Models;assembly=SharedResources"
              x:Class="PettoV1.Views.HistorialTareas"
              x:DataType="vm:HistorialTareasViewModel"
-             BackgroundColor="#FFFFFF"
              Title="Tu Archivo">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource GradientMid}"   Offset="0.4"/>
+            <GradientStop Color="{StaticResource GradientEnd}"   Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
-        <!-- ── Header ── -->
+        <!-- ── Header glass ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
+              Padding="12,44,12,10"
+              BackgroundColor="{StaticResource GlassHeaderBackground}">
             <ImageButton Grid.Column="0" Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
                          BackgroundColor="Transparent"
@@ -20,10 +28,11 @@
             <Label Grid.Column="1"
                    Text="{Binding FechaHora}"
                    HorizontalOptions="Center" VerticalOptions="Center"
-                   FontSize="13" TextColor="#006064"/>
+                   FontSize="13" TextColor="{StaticResource TextOnDarkSecondary}"/>
             <ImageButton Grid.Column="2" Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B2EBF2" CornerRadius="22"
+                         BackgroundColor="{StaticResource GlassCardBackground}"
+                         CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
 
@@ -32,7 +41,8 @@
 
             <!-- Barra de herramientas: calendario + filtro -->
             <Grid ColumnDefinitions="Auto,*,Auto"
-                  Padding="16,12" BackgroundColor="#F5F5F5">
+                  Padding="16,12"
+                  BackgroundColor="{StaticResource GlassHeaderBackground}">
                 <ImageButton Grid.Column="0"
                              Source="calendar_icon.png"
                              WidthRequest="36" HeightRequest="36"
@@ -41,7 +51,7 @@
                 <Label Grid.Column="1"
                        Text="Tu Archivo"
                        FontSize="20" FontAttributes="Bold"
-                       TextColor="#0D1B2A"
+                       TextColor="{StaticResource TextOnDark}"
                        VerticalOptions="Center"
                        HorizontalOptions="Center"/>
                 <ImageButton Grid.Column="2"
@@ -52,49 +62,49 @@
             </Grid>
 
             <!-- Selector de fecha -->
-            <DatePicker Date="{Binding FechaFiltro}"
-                        Format="dd/MM/yyyy"
-                        BackgroundColor="#F5F5F5"
-                        TextColor="#0D1B2A"
-                        Margin="16,0,16,8"
-                        IsVisible="{Binding MostrarCalendario}"/>
+            <Frame Style="{StaticResource GlassCard}" Padding="12,4"
+                   Margin="16,8,16,0"
+                   IsVisible="{Binding MostrarCalendario}">
+                <DatePicker Date="{Binding FechaFiltro}"
+                            Format="dd/MM/yyyy"
+                            TextColor="{StaticResource TextOnDark}"
+                            BackgroundColor="Transparent"/>
+            </Frame>
 
-            <!-- Notas / historial -->
+            <!-- Historial -->
             <ScrollView>
                 <VerticalStackLayout Padding="16" Spacing="12">
-
-                    <CollectionView ItemsSource="{Binding Historial}"
-                                    EmptyView="No hay tareas completadas">
+                    <CollectionView ItemsSource="{Binding Historial}">
+                        <CollectionView.EmptyView>
+                            <Label Text="No hay tareas completadas"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"
+                                   FontSize="14" HorizontalOptions="Center" Margin="0,20"/>
+                        </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:TareaModel">
-                                <Frame BackgroundColor="#F5F5F5"
-                                       CornerRadius="12"
-                                       Padding="16"
-                                       Margin="0,4"
-                                       HasShadow="False">
+                                <Frame Style="{StaticResource GlassCard}"
+                                       Padding="16" Margin="0,4">
                                     <VerticalStackLayout Spacing="4">
                                         <Label Text="{Binding Titulo}"
-                                               FontSize="16"
-                                               FontAttributes="Bold"
-                                               TextColor="#0D1B2A"/>
+                                               FontSize="16" FontAttributes="Bold"
+                                               TextColor="{StaticResource TextOnDark}"/>
                                         <Label Text="{Binding Descripcion}"
                                                FontSize="13"
-                                               TextColor="#546E7A"
+                                               TextColor="{StaticResource TextOnDarkSecondary}"
                                                MaxLines="3"
                                                LineBreakMode="TailTruncation"/>
                                         <Label Text="{Binding FechaLimite, StringFormat='Completada: {0:dd/MM/yyyy}'}"
                                                FontSize="12"
-                                               TextColor="#78909C"/>
+                                               TextColor="{StaticResource TextOnDarkSecondary}"/>
                                         <Label Text="{Binding Categoria.Nombre}"
                                                FontSize="12"
-                                               TextColor="#006064"
+                                               TextColor="{StaticResource AccentCyan}"
                                                FontAttributes="Bold"/>
                                     </VerticalStackLayout>
                                 </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-
                 </VerticalStackLayout>
             </ScrollView>
 

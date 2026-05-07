@@ -43,6 +43,6 @@ namespace PettoV1.ViewModels
         public void AbrirMenu() => Shell.Current.FlyoutIsPresented = true;
 
         [RelayCommand]
-        public async Task IrAPerfil() => await Shell.Current.GoToAsync("PerfilPage");
+        public async Task IrAPerfil() => await Shell.Current.GoToAsync("Perfil");
     }
 }

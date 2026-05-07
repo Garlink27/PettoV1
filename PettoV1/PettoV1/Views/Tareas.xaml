@@ -2,14 +2,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PettoV1.Views.Tareas"
-             BackgroundColor="#D5F9FF"
              Title="Tareas">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource GradientMid}"   Offset="0.4"/>
+            <GradientStop Color="{StaticResource GradientEnd}"   Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
-        <!-- ── Header ── -->
+        <!-- ── Header glass ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#D5F9FF">
+              Padding="12,44,12,10"
+              BackgroundColor="{StaticResource GlassHeaderBackground}">
             <ImageButton Grid.Column="0"
                          Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
@@ -19,11 +27,12 @@
                    Text="{Binding FechaHora}"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   FontSize="13" TextColor="#26C6DA"/>
+                   FontSize="13"
+                   TextColor="{StaticResource TextOnDarkSecondary}"/>
             <ImageButton Grid.Column="2"
                          Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B0E0E6"
+                         BackgroundColor="{StaticResource GlassCardBackground}"
                          CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
@@ -33,62 +42,72 @@
             <VerticalStackLayout Padding="16" Spacing="16">
 
                 <!-- ── Tareas próximas ── -->
-                <Label Text="Tareas próximas"
-                       FontSize="18" FontAttributes="Bold"
-                       TextColor="#2C2C2C"/>
+                <Label Text="TAREAS PRÓXIMAS"
+                       FontSize="10" FontAttributes="Bold"
+                       CharacterSpacing="1.5"
+                       TextColor="{StaticResource AccentCyan}"/>
 
-                <CollectionView ItemsSource="{Binding TareasProximas}">
-                    <CollectionView.EmptyView>
-                        <Label Text="No hay tareas próximas"
-                               FontSize="14" TextColor="#9E9E9E"
-                               HorizontalOptions="Center"
-                               Margin="0,8"/>
-                    </CollectionView.EmptyView>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid ColumnDefinitions="Auto,*" Padding="0,8">
-                                <BoxView Grid.Column="0"
-                                         WidthRequest="10" HeightRequest="10"
-                                         BackgroundColor="#26C6DA"
-                                         CornerRadius="5"
-                                         VerticalOptions="Center"
-                                         Margin="0,0,10,0"/>
-                                <Label Grid.Column="1"
-                                       Text="{Binding Titulo}"
-                                       FontSize="15" TextColor="#2C2C2C"
-                                       VerticalOptions="Center"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                <Frame Style="{StaticResource GlassCard}" Padding="12,8">
+                    <CollectionView ItemsSource="{Binding TareasProximas}">
+                        <CollectionView.EmptyView>
+                            <Label Text="No hay tareas próximas"
+                                   FontSize="14"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"
+                                   HorizontalOptions="Center"
+                                   Margin="0,8"/>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto,*" Padding="0,8">
+                                    <BoxView Grid.Column="0"
+                                             WidthRequest="8" HeightRequest="8"
+                                             BackgroundColor="{StaticResource AccentCyan}"
+                                             CornerRadius="4"
+                                             VerticalOptions="Center"
+                                             Margin="0,0,10,0"/>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Titulo}"
+                                           FontSize="15"
+                                           TextColor="{StaticResource TextOnDark}"
+                                           VerticalOptions="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
 
-                <!-- Separador -->
-                <BoxView HeightRequest="1" Color="#80DEEA" Margin="0,4"/>
+                <!-- Separador acento -->
+                <BoxView HeightRequest="1.5" Margin="0,4">
+                    <BoxView.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource AccentCyan}" Offset="0"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
+                        </LinearGradientBrush>
+                    </BoxView.Background>
+                </BoxView>
 
                 <!-- ── Categorías + botón agregar ── -->
                 <Grid ColumnDefinitions="*,Auto">
                     <Label Grid.Column="0"
-                           Text="Categorías"
-                           FontSize="18" FontAttributes="Bold"
-                           TextColor="#2C2C2C"
+                           Text="CATEGORÍAS"
+                           FontSize="10" FontAttributes="Bold"
+                           CharacterSpacing="1.5"
+                           TextColor="{StaticResource AccentCyan}"
                            VerticalOptions="Center"/>
-
-                    <!-- Botón + para agregar categoría -->
                     <Frame Grid.Column="1"
-                           BackgroundColor="#2C2C2C"
-                           CornerRadius="20"
-                           Padding="0"
+                           BackgroundColor="{StaticResource GlassCardBackground}"
+                           BorderColor="{StaticResource GlassCardBorder}"
+                           CornerRadius="20" Padding="0"
                            WidthRequest="40" HeightRequest="40"
                            HasShadow="False">
                         <Label Text="+"
                                FontSize="26"
-                               TextColor="White"
+                               TextColor="{StaticResource AccentCyan}"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"
                                Margin="0,-2,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer
-                                    Command="{Binding AgregarCategoriaCommand}"/>
+                                <TapGestureRecognizer Command="{Binding AgregarCategoriaCommand}"/>
                             </Label.GestureRecognizers>
                         </Label>
                     </Frame>
@@ -97,13 +116,14 @@
                 <!-- Grid de categorías 2 columnas -->
                 <CollectionView ItemsSource="{Binding Categorias}">
                     <CollectionView.EmptyView>
-                        <VerticalStackLayout HorizontalOptions="Center"
-                                             Spacing="8" Margin="0,20">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="8" Margin="0,20">
                             <Label Text="Sin categorías aún"
-                                   FontSize="14" TextColor="#9E9E9E"
+                                   FontSize="14"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"
                                    HorizontalOptions="Center"/>
                             <Label Text="Toca el botón + para agregar una"
-                                   FontSize="12" TextColor="#B3B3B3"
+                                   FontSize="12"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"
                                    HorizontalOptions="Center"/>
                         </VerticalStackLayout>
                     </CollectionView.EmptyView>
@@ -115,8 +135,9 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BackgroundColor="White"
-                                   CornerRadius="12"
+                            <Frame BackgroundColor="{StaticResource GlassCardBackground}"
+                                   BorderColor="{StaticResource GlassCardBorder}"
+                                   CornerRadius="14"
                                    Padding="12"
                                    HasShadow="False"
                                    HeightRequest="80">
@@ -131,16 +152,22 @@
                                            Text="{Binding Nombre}"
                                            FontSize="15"
                                            FontAttributes="Bold"
-                                           TextColor="#2C2C2C"
+                                           TextColor="{StaticResource TextOnDark}"
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center"
                                            HorizontalTextAlignment="Center"/>
-                                    <!-- Línea decorativa inferior -->
+                                    <!-- Línea decorativa inferior con gradiente acento -->
                                     <BoxView Grid.Row="1"
-                                             HeightRequest="3"
-                                             BackgroundColor="#D5F9FF"
+                                             HeightRequest="2.5"
                                              CornerRadius="2"
-                                             Margin="0,4,0,0"/>
+                                             Margin="0,4,0,0">
+                                        <BoxView.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Color="{StaticResource AccentBlue}"  Offset="0"/>
+                                                <GradientStop Color="{StaticResource AccentCyan}"  Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </BoxView.Background>
+                                    </BoxView>
                                 </Grid>
                             </Frame>
                         </DataTemplate>

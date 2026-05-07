@@ -4,14 +4,22 @@
              xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.MainPage"
              x:DataType="vm:MainViewModel"
-             BackgroundColor="#FFFFFF"
              Title="Home">
 
-    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource GradientMid}"   Offset="0.4"/>
+            <GradientStop Color="{StaticResource GradientEnd}"   Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
-        <!-- ── Header ── -->
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
+
+        <!-- ── Header glass ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
+              Padding="12,44,12,10"
+              BackgroundColor="{StaticResource GlassHeaderBackground}">
             <ImageButton Grid.Column="0"
                          Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
@@ -22,11 +30,11 @@
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    FontSize="13"
-                   TextColor="#006064"/>
+                   TextColor="{StaticResource TextOnDarkSecondary}"/>
             <ImageButton Grid.Column="2"
                          Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B2EBF2"
+                         BackgroundColor="{StaticResource GlassCardBackground}"
                          CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
@@ -35,50 +43,71 @@
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="16" Spacing="20">
 
-                <!-- Mascota (círculo placeholder) -->
-                <Ellipse Fill="#B2EBF2"
-                         WidthRequest="280" HeightRequest="280"
-                         HorizontalOptions="Center"/>
+                <!-- Card mascota glass -->
+                <Frame Style="{StaticResource GlassCard}"
+                       Padding="20,24">
+                    <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
 
-                <!-- Puntos de cuidado -->
-                <Frame BackgroundColor="#F5F5F5"
-                       CornerRadius="20"
-                       Padding="16,8"
-                       HorizontalOptions="Center"
-                       HasShadow="False">
-                    <Label FontSize="14" TextColor="#0D1B2A">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Puntos de cuidado: " FontAttributes="Bold"/>
-                                <Span Text="{Binding PuntosDesCuidado}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                        <!-- Avatar circular con gradiente -->
+                        <Grid WidthRequest="120" HeightRequest="120"
+                              HorizontalOptions="Center">
+                            <Ellipse WidthRequest="120" HeightRequest="120"
+                                     Stroke="{StaticResource GlassCardBorder}"
+                                     StrokeThickness="2">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource AccentCyan}" Offset="0"/>
+                                        <GradientStop Color="{StaticResource AccentBlue}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+
+                        <!-- Puntos de cuidado -->
+                        <Label FontSize="15" TextColor="{StaticResource TextOnDarkSecondary}"
+                               HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Puntos de cuidado: "
+                                          TextColor="{StaticResource TextOnDarkSecondary}"/>
+                                    <Span Text="{Binding PuntosDesCuidado}"
+                                          FontSize="20" FontAttributes="Bold"
+                                          TextColor="{StaticResource TextOnDark}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                    </VerticalStackLayout>
                 </Frame>
 
-                <!-- Botones de interacción con la mascota -->
+                <!-- Botones de interacción — translúcidos -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="12">
-                    <Ellipse Fill="#81D4FA" WidthRequest="45" HeightRequest="45">
+                    <Ellipse WidthRequest="45" HeightRequest="45"
+                             Fill="#4D29B6F2" Stroke="#8029B6F2" StrokeThickness="1.5">
                         <Ellipse.GestureRecognizers>
                             <TapGestureRecognizer/>
                         </Ellipse.GestureRecognizers>
                     </Ellipse>
-                    <Ellipse Fill="#A5D6A7" WidthRequest="45" HeightRequest="45">
+                    <Ellipse WidthRequest="45" HeightRequest="45"
+                             Fill="#4D66BB6A" Stroke="#8066BB6A" StrokeThickness="1.5">
                         <Ellipse.GestureRecognizers>
                             <TapGestureRecognizer/>
                         </Ellipse.GestureRecognizers>
                     </Ellipse>
-                    <Ellipse Fill="#FFCC80" WidthRequest="45" HeightRequest="45">
+                    <Ellipse WidthRequest="45" HeightRequest="45"
+                             Fill="#4DFFB74D" Stroke="#80FFB74D" StrokeThickness="1.5">
                         <Ellipse.GestureRecognizers>
                             <TapGestureRecognizer/>
                         </Ellipse.GestureRecognizers>
                     </Ellipse>
-                    <Ellipse Fill="#CE93D8" WidthRequest="45" HeightRequest="45">
+                    <Ellipse WidthRequest="45" HeightRequest="45"
+                             Fill="#4DCE93D8" Stroke="#80CE93D8" StrokeThickness="1.5">
                         <Ellipse.GestureRecognizers>
                             <TapGestureRecognizer/>
                         </Ellipse.GestureRecognizers>
                     </Ellipse>
-                    <Ellipse Fill="#EF9A9A" WidthRequest="45" HeightRequest="45">
+                    <Ellipse WidthRequest="45" HeightRequest="45"
+                             Fill="#4DEF9A9A" Stroke="#80EF9A9A" StrokeThickness="1.5">
                         <Ellipse.GestureRecognizers>
                             <TapGestureRecognizer/>
                         </Ellipse.GestureRecognizers>

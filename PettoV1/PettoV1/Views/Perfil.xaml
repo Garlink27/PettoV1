@@ -4,14 +4,22 @@
              xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.Perfil"
              x:DataType="vm:PerfilViewModel"
-             BackgroundColor="#FFFFFF"
              Title="Perfil">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource GradientMid}"   Offset="0.4"/>
+            <GradientStop Color="{StaticResource GradientEnd}"   Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
-        <!-- ── Header ── -->
+        <!-- ── Header glass ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
+              Padding="12,44,12,10"
+              BackgroundColor="{StaticResource GlassHeaderBackground}">
             <ImageButton Grid.Column="0" Source="arrow_left_icon.png"
                          WidthRequest="40" HeightRequest="40"
                          BackgroundColor="Transparent"
@@ -20,7 +28,7 @@
                    Text="Perfil"
                    HorizontalOptions="Center" VerticalOptions="Center"
                    FontSize="20" FontAttributes="Bold"
-                   TextColor="#006064"/>
+                   TextColor="{StaticResource TextOnDark}"/>
             <ImageButton Grid.Column="2" Source="settings_icon.png"
                          WidthRequest="36" HeightRequest="36"
                          BackgroundColor="Transparent"
@@ -31,72 +39,91 @@
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="20" Spacing="20">
 
-                <!-- Avatar -->
-                <Grid HorizontalOptions="Center" WidthRequest="130" HeightRequest="130">
-                    <Ellipse Fill="#B2EBF2"
-                             WidthRequest="130" HeightRequest="130"/>
-                    <Image Source="user_large_icon.png"
-                           WidthRequest="90" HeightRequest="90"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center"/>
-                    <ImageButton Source="edit_icon.png"
-                                 WidthRequest="28" HeightRequest="28"
-                                 BackgroundColor="White"
-                                 CornerRadius="14"
-                                 HorizontalOptions="End"
-                                 VerticalOptions="End"/>
-                </Grid>
+                <!-- Avatar glass card -->
+                <Frame Style="{StaticResource GlassCard}" Padding="20,24">
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Grid HorizontalOptions="Center"
+                              WidthRequest="100" HeightRequest="100">
+                            <Ellipse WidthRequest="100" HeightRequest="100"
+                                     Stroke="{StaticResource GlassCardBorder}"
+                                     StrokeThickness="2.5">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource AccentCyan}" Offset="0"/>
+                                        <GradientStop Color="{StaticResource AccentBlue}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Image Source="user_large_icon.png"
+                                   WidthRequest="64" HeightRequest="64"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                            <ImageButton Source="edit_icon.png"
+                                         WidthRequest="26" HeightRequest="26"
+                                         BackgroundColor="{StaticResource AccentCyan}"
+                                         CornerRadius="13"
+                                         HorizontalOptions="End"
+                                         VerticalOptions="End"/>
+                        </Grid>
+                        <Label Text="{Binding NombreUsuario}"
+                               FontSize="20" FontAttributes="Bold"
+                               TextColor="{StaticResource TextOnDark}"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
 
-                <!-- Nombre de usuario -->
-                <Label Text="{Binding NombreUsuario}"
-                       FontSize="22" FontAttributes="Bold"
-                       TextColor="#0D1B2A"
-                       HorizontalOptions="Center"/>
+                <!-- Info glass card -->
+                <Frame Style="{StaticResource GlassCard}">
+                    <VerticalStackLayout Spacing="0">
 
-                <!-- Sección Información -->
-                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                        <!-- Email -->
+                        <VerticalStackLayout Spacing="3" Padding="0,8">
+                            <Label Text="EMAIL" FontSize="10" FontAttributes="Bold"
+                                   CharacterSpacing="1.5"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"/>
+                            <Label Text="{Binding Email}"
+                                   FontSize="15" TextColor="{StaticResource TextOnDark}"/>
+                        </VerticalStackLayout>
 
-                <Label Text="Información"
-                       FontSize="16" FontAttributes="Bold"
-                       TextColor="#0D1B2A"/>
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource GlassHeaderBackground}" Margin="0,2"/>
 
-                <!-- Email -->
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Email" FontSize="13" TextColor="#546E7A"/>
-                    <Label Text="{Binding Email}"
-                           FontSize="15" TextColor="#0D1B2A"/>
-                </VerticalStackLayout>
+                        <!-- Contraseña -->
+                        <VerticalStackLayout Spacing="3" Padding="0,8">
+                            <Label Text="CONTRASEÑA" FontSize="10" FontAttributes="Bold"
+                                   CharacterSpacing="1.5"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"/>
+                            <Label Text="••••••••"
+                                   FontSize="15" TextColor="{StaticResource TextOnDark}"/>
+                        </VerticalStackLayout>
 
-                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource GlassHeaderBackground}" Margin="0,2"/>
 
-                <!-- Contraseña -->
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Contraseña" FontSize="13" TextColor="#546E7A"/>
-                    <Label Text="••••••••"
-                           FontSize="15" TextColor="#0D1B2A"/>
-                </VerticalStackLayout>
+                        <!-- Teléfono editable -->
+                        <VerticalStackLayout Spacing="3" Padding="0,8">
+                            <Label Text="TELÉFONO" FontSize="10" FontAttributes="Bold"
+                                   CharacterSpacing="1.5"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"/>
+                            <Border BackgroundColor="{StaticResource GlassInputBackground}"
+                                    Stroke="{StaticResource GlassCardBorder}"
+                                    StrokeThickness="1"
+                                    Padding="4,0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10"/>
+                                </Border.StrokeShape>
+                                <Entry Text="{Binding Telefono}"
+                                       Placeholder="Agrega tu teléfono"
+                                       Keyboard="Telephone"
+                                       BackgroundColor="Transparent"/>
+                            </Border>
+                        </VerticalStackLayout>
 
-                <BoxView HeightRequest="1" Color="#E0E0E0"/>
-
-                <!-- Teléfono -->
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Teléfono" FontSize="13" TextColor="#546E7A"/>
-                    <Entry Text="{Binding Telefono}"
-                           Placeholder="Agrega tu teléfono"
-                           Keyboard="Telephone"
-                           TextColor="#0D1B2A"
-                           PlaceholderColor="#90A4AE"
-                           BackgroundColor="#F5F5F5"/>
-                </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
 
                 <!-- Botón Guardar -->
                 <Button Text="Guardar cambios"
-                        BackgroundColor="#006064"
-                        TextColor="White"
-                        CornerRadius="8"
-                        HeightRequest="50"
                         Command="{Binding GuardarPerfilCommand}"
-                        Margin="0,12,0,0"/>
+                        Margin="0,4,0,0"/>
 
             </VerticalStackLayout>
         </ScrollView>

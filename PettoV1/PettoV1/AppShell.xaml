@@ -7,7 +7,7 @@
        Shell.NavBarIsVisible="False"
        FlyoutBehavior="Flyout"
        FlyoutWidth="240"
-       BackgroundColor="#E0F7FA">
+       BackgroundColor="{StaticResource GradientMid}">
 
     <Shell.Resources>
         <converters:FlyoutTitleToColorConverter x:Key="TitleToColor"/>
@@ -25,7 +25,7 @@
                        VerticalOptions="Center"/>
                 <Label Grid.Column="1"
                        Text="{Binding Title}"
-                       TextColor="{Binding Title, Converter={StaticResource TitleToColor}}"
+                       TextColor="{StaticResource TextOnDark}"
                        FontSize="15"
                        VerticalOptions="Center"/>
             </Grid>
@@ -34,7 +34,13 @@
 
     <!-- Encabezado del Flyout -->
     <Shell.FlyoutHeader>
-        <Grid BackgroundColor="#E0F7FA" Padding="16,40,16,16">
+        <Grid Padding="16,40,16,16">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="{StaticResource GradientStart}" Offset="0"/>
+                    <GradientStop Color="{StaticResource GradientMid}"   Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -42,23 +48,23 @@
             <Ellipse Grid.Row="0"
                      WidthRequest="70" HeightRequest="70"
                      HorizontalOptions="Start"
-                     Fill="#B2EBF2"/>
+                     Fill="{StaticResource GlassCardBackground}"
+                     Stroke="{StaticResource GlassCardBorder}"
+                     StrokeThickness="2"/>
             <Label Grid.Row="1"
                    Text="Usuario"
                    FontSize="16"
                    FontAttributes="Bold"
-                   TextColor="#006064"
+                   TextColor="{StaticResource TextOnDark}"
                    Margin="0,8,0,0"/>
         </Grid>
     </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
-        <StackLayout Padding="16,8" BackgroundColor="#E0F7FA">
-            <BoxView HeightRequest="1" Color="#B2EBF2" Margin="0,0,0,8"/>
+        <StackLayout Padding="16,8" BackgroundColor="{StaticResource GradientMid}">
+            <BoxView HeightRequest="1" Color="{StaticResource GlassCardBorder}" Margin="0,0,0,8"/>
             <Button Text="Cerrar Sesión"
-                    BackgroundColor="#D32F2F"
-                    TextColor="White"
-                    CornerRadius="8"
+                    Style="{StaticResource DangerButton}"
                     Command="{Binding CerrarSesionCommand}"/>
         </StackLayout>
     </Shell.FlyoutFooter>
@@ -72,37 +78,32 @@
 
     <!-- FlyoutItem principal: contiene los 4 tabs -->
     <FlyoutItem Title="Home" Icon="home_icon.png"
-                Shell.TabBarForegroundColor="Black"
-                Shell.TabBarUnselectedColor="Black">
+                Shell.TabBarForegroundColor="{StaticResource AccentCyan}"
+                Shell.TabBarUnselectedColor="{StaticResource TextOnDarkSecondary}"
+                Shell.TabBarBackgroundColor="{StaticResource TabBarBackground}">
         <Tab Title="Home" Icon="home_icon.png">
             <ShellContent Route="MainPage"
                           ContentTemplate="{DataTemplate views:MainPage}"
                           Shell.NavBarIsVisible="False"/>
         </Tab>
-        <Tab Title="Chat" Icon="chat_icon.png"
-             Shell.TabBarForegroundColor="Black"
-             Shell.TabBarUnselectedColor="Black">
+        <Tab Title="Chat" Icon="chat_icon.png">
             <ShellContent Route="Chat"
                           ContentTemplate="{DataTemplate views:Chat}"
                           Shell.NavBarIsVisible="False"/>
         </Tab>
-        <Tab Title="Tareas" Icon="tasks_icon.png"
-             Shell.TabBarForegroundColor="Black"
-            Shell.TabBarUnselectedColor="Black">
+        <Tab Title="Tareas" Icon="tasks_icon.png">
             <ShellContent Route="Tareas"
                           ContentTemplate="{DataTemplate views:Tareas}"
                           Shell.NavBarIsVisible="False"/>
         </Tab>
-        <Tab Title="Gráficas" Icon="stats_icon.png"
-             Shell.TabBarForegroundColor="Black"
-             Shell.TabBarUnselectedColor="Black">
+        <Tab Title="Gráficas" Icon="stats_icon.png">
             <ShellContent Route="Estadisticas"
                           ContentTemplate="{DataTemplate views:Estadisticas}"
                           Shell.NavBarIsVisible="False"/>
         </Tab>
     </FlyoutItem>
 
-    <!-- FlyoutItems secundarios: sin tabbar -->
+    <!-- FlyoutItems secundarios -->
     <FlyoutItem Title="Historial de Tareas" Icon="history_icon.png">
         <ShellContent Route="HistorialTareas"
                       ContentTemplate="{DataTemplate views:HistorialTareas}"

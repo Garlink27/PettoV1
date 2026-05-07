@@ -4,14 +4,22 @@
              xmlns:vm="clr-namespace:PettoV1.ViewModels"
              x:Class="PettoV1.Views.Estadisticas"
              x:DataType="vm:EstadisticasViewModel"
-             BackgroundColor="#FFFFFF"
              Title="Estadísticas">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource GradientMid}"   Offset="0.4"/>
+            <GradientStop Color="{StaticResource GradientEnd}"   Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
-        <!-- ── Header ── -->
+        <!-- ── Header glass ── -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto"
-              Padding="12,44,12,10" BackgroundColor="#E0F7FA">
+              Padding="12,44,12,10"
+              BackgroundColor="{StaticResource GlassHeaderBackground}">
             <ImageButton Grid.Column="0" Source="menu_icon.png"
                          WidthRequest="36" HeightRequest="36"
                          BackgroundColor="Transparent"
@@ -19,10 +27,11 @@
             <Label Grid.Column="1"
                    Text="{Binding FechaHora}"
                    HorizontalOptions="Center" VerticalOptions="Center"
-                   FontSize="13" TextColor="#006064"/>
+                   FontSize="13" TextColor="{StaticResource TextOnDarkSecondary}"/>
             <ImageButton Grid.Column="2" Source="user_icon.png"
                          WidthRequest="44" HeightRequest="44"
-                         BackgroundColor="#B2EBF2" CornerRadius="22"
+                         BackgroundColor="{StaticResource GlassCardBackground}"
+                         CornerRadius="22"
                          Command="{Binding IrAPerfilCommand}"/>
         </Grid>
 
@@ -32,26 +41,19 @@
 
                 <Label Text="Estadísticas"
                        FontSize="24" FontAttributes="Bold"
-                       TextColor="#0D1B2A"
+                       TextColor="{StaticResource TextOnDark}"
                        HorizontalOptions="Center"/>
 
-                <!-- Gráfica placeholder -->
-                <Frame BackgroundColor="#F5F5F5"
-                       CornerRadius="16"
-                       Padding="16"
-                       HasShadow="False"
+                <!-- Gráfica placeholder glass -->
+                <Frame Style="{StaticResource GlassCard}"
                        HeightRequest="220">
                     <VerticalStackLayout VerticalOptions="Center" Spacing="8">
-                        <Label Text="📊"
-                               FontSize="48"
-                               HorizontalOptions="Center"/>
+                        <Label Text="📊" FontSize="48" HorizontalOptions="Center"/>
                         <Label Text="Gráfica de tareas"
-                               FontSize="16" TextColor="#546E7A"
+                               FontSize="16"
+                               TextColor="{StaticResource TextOnDarkSecondary}"
                                HorizontalOptions="Center"/>
                         <Button Text="Mostrar estadísticas"
-                                BackgroundColor="#006064"
-                                TextColor="White"
-                                CornerRadius="8"
                                 HorizontalOptions="Center"
                                 Command="{Binding ActualizarEstadisticasCommand}"/>
                     </VerticalStackLayout>
@@ -60,60 +62,82 @@
                 <!-- Tarjetas de resumen -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12">
 
-                    <Frame Grid.Column="0" BackgroundColor="#F5F5F5"
+                    <!-- Total -->
+                    <Frame Grid.Column="0"
+                           BackgroundColor="{StaticResource GlassCardBackground}"
+                           BorderColor="{StaticResource GlassCardBorder}"
                            CornerRadius="14" Padding="16" HasShadow="False">
                         <VerticalStackLayout Spacing="4">
-                            <Label Text="Total" FontSize="13" TextColor="#546E7A"/>
+                            <Label Text="Total" FontSize="13"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"/>
                             <Label Text="{Binding TotalTareas}"
                                    FontSize="32" FontAttributes="Bold"
-                                   TextColor="#0D1B2A"/>
-                            <Label Text="tareas" FontSize="12" TextColor="#78909C"/>
+                                   TextColor="{StaticResource TextOnDark}"/>
+                            <Label Text="tareas" FontSize="12"
+                                   TextColor="{StaticResource TextOnDarkSecondary}"/>
                         </VerticalStackLayout>
                     </Frame>
 
-                    <Frame Grid.Column="1" BackgroundColor="#E0F7FA"
+                    <!-- Completadas — tint cyan -->
+                    <Frame Grid.Column="1"
+                           BackgroundColor="#2626C6DA"
+                           BorderColor="#5926C6DA"
                            CornerRadius="14" Padding="16" HasShadow="False">
                         <VerticalStackLayout Spacing="4">
-                            <Label Text="Completadas" FontSize="13" TextColor="#00838F"/>
+                            <Label Text="Completadas" FontSize="13"
+                                   TextColor="{StaticResource AccentCyan}"/>
                             <Label Text="{Binding TareasCompletadas}"
                                    FontSize="32" FontAttributes="Bold"
-                                   TextColor="#00838F"/>
-                            <Label Text="tareas" FontSize="12" TextColor="#00838F"/>
+                                   TextColor="{StaticResource AccentCyan}"/>
+                            <Label Text="tareas" FontSize="12"
+                                   TextColor="{StaticResource AccentCyan}"/>
                         </VerticalStackLayout>
                     </Frame>
 
-                    <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="#FFF3E0"
+                    <!-- Pendientes — tint naranja -->
+                    <Frame Grid.Row="1" Grid.Column="0"
+                           BackgroundColor="#26FFA726"
+                           BorderColor="#59FFA726"
                            CornerRadius="14" Padding="16" HasShadow="False">
                         <VerticalStackLayout Spacing="4">
-                            <Label Text="Pendientes" FontSize="13" TextColor="#E65100"/>
+                            <Label Text="Pendientes" FontSize="13"
+                                   TextColor="#FFFFCC80"/>
                             <Label Text="{Binding TareasIncompletas}"
                                    FontSize="32" FontAttributes="Bold"
-                                   TextColor="#E65100"/>
-                            <Label Text="tareas" FontSize="12" TextColor="#E65100"/>
+                                   TextColor="#FFFFCC80"/>
+                            <Label Text="tareas" FontSize="12"
+                                   TextColor="#FFFFCC80"/>
                         </VerticalStackLayout>
                     </Frame>
 
-                    <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="#F3E5F5"
+                    <!-- Progreso — tint púrpura -->
+                    <Frame Grid.Row="1" Grid.Column="1"
+                           BackgroundColor="#26AB47BC"
+                           BorderColor="#59AB47BC"
                            CornerRadius="14" Padding="16" HasShadow="False">
                         <VerticalStackLayout Spacing="4">
-                            <Label Text="Progreso" FontSize="13" TextColor="#6A1B9A"/>
+                            <Label Text="Progreso" FontSize="13"
+                                   TextColor="#FFCE93D8"/>
                             <Label Text="{Binding PorcentajeCompletadas, StringFormat='{0}%'}"
                                    FontSize="32" FontAttributes="Bold"
-                                   TextColor="#6A1B9A"/>
-                            <Label Text="completado" FontSize="12" TextColor="#6A1B9A"/>
+                                   TextColor="#FFCE93D8"/>
+                            <Label Text="completado" FontSize="12"
+                                   TextColor="#FFCE93D8"/>
                         </VerticalStackLayout>
                     </Frame>
 
                 </Grid>
 
-                <!-- Calendario para filtrar -->
+                <!-- Filtro de fecha -->
                 <Label Text="Selecciona una fecha"
                        FontSize="16" FontAttributes="Bold"
-                       TextColor="#0D1B2A"/>
-                <DatePicker Date="{Binding FechaSeleccionada}"
-                            Format="dd/MM/yyyy"
-                            TextColor="#0D1B2A"
-                            BackgroundColor="#F5F5F5"/>
+                       TextColor="{StaticResource TextOnDark}"/>
+                <Frame Style="{StaticResource GlassCard}" Padding="12,4">
+                    <DatePicker Date="{Binding FechaSeleccionada}"
+                                Format="dd/MM/yyyy"
+                                TextColor="{StaticResource TextOnDark}"
+                                BackgroundColor="Transparent"/>
+                </Frame>
 
             </VerticalStackLayout>
         </ScrollView>

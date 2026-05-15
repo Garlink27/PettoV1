@@ -8,7 +8,6 @@ namespace PettoV1.Services
     /// <summary>
     /// Servicio que conecta con la API de Groq para generar respuestas de IA.
     /// Groq es gratuito, muy rápido y sin límites diarios estrictos.
-    /// Obtén tu API key gratis en: https://console.groq.com
     /// </summary>
     public class APIService
     {
@@ -25,7 +24,7 @@ namespace PettoV1.Services
         /// Personalidad del asistente. Puedes editarla para cambiar el comportamiento.
         /// </summary>
         private const string SystemPrompt =
-            "Eres Petto, un asistente virtual amigable y experto en cuidado de mascotas. " +
+            "Eres Petto, un asistente virtual amigable y experto en cuidado de buenos habitos. " +
             "Ayudas a los dueños con consejos sobre alimentación, salud, higiene, ejercicio " +
             "y bienestar general" +
             "Responde en el idioma en el que te esten hablando, de forma clara, cariñosa y concisa. "

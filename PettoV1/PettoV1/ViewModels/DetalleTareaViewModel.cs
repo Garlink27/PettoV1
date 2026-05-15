@@ -45,12 +45,17 @@ namespace PettoV1.ViewModels
             set
             {
                 _tareaOriginal = value;
-                Titulo = value.Titulo;
-                Descripcion = value.Descripcion;
-                FechaLimite = value.FechaLimite == default ? DateTime.Today.AddDays(1) : value.FechaLimite;
-                Completada = value.Completada;
-                CategoriaId = value.CategoriaId;
+                Titulo         = value.Titulo;
+                Descripcion    = value.Descripcion;
+                FechaLimite    = value.FechaLimite == default ? DateTime.Today.AddDays(1) : value.FechaLimite;
+                Completada     = value.Completada;
+                CategoriaId    = value.CategoriaId;
                 OnPropertyChanged(nameof(EsModoEdicion));
+
+                // Si las categorías ya están cargadas, seleccionamos la correcta ahora mismo.
+                // Si aún no están cargadas, CargarCategorias() lo hará al terminar.
+                if (Categorias.Count > 0 && CategoriaId > 0)
+                    CategoriaSeleccionada = Categorias.FirstOrDefault(c => c.Id == CategoriaId);
             }
         }
 
@@ -74,8 +79,18 @@ namespace PettoV1.ViewModels
         }
         public async Task CargarCategorias()
         {
-            var lista = await _dataContext.Categorias.ToListAsync();
+            int usuarioId = Preferences.Get("UsuarioId", 0);
+
+            var lista = await _dataContext.Categorias
+                .Where(c => c.UsuarioId == usuarioId)
+                .ToListAsync();
+
             Categorias = new ObservableCollection<CategoriaModel>(lista);
+
+            // Si la tarea ya fue asignada antes de que terminara esta carga,
+            // ahora sí podemos seleccionar la categoría correcta en el Picker.
+            if (CategoriaId > 0)
+                CategoriaSeleccionada = Categorias.FirstOrDefault(c => c.Id == CategoriaId);
         }
 
         [RelayCommand]

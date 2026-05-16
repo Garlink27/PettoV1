@@ -65,7 +65,7 @@
             <BoxView HeightRequest="1" Color="{StaticResource GlassCardBorder}" Margin="0,0,0,8"/>
             <Button Text="Cerrar Sesión"
                     Style="{StaticResource DangerButton}"
-                    Command="{Binding CerrarSesionCommand}"/>
+                    Clicked="OnCerrarSesionClicked"/>
         </StackLayout>
     </Shell.FlyoutFooter>
 
@@ -96,7 +96,7 @@
                           ContentTemplate="{DataTemplate views:Tareas}"
                           Shell.NavBarIsVisible="False"/>
         </Tab>
-        <Tab Title="Gráficas" Icon="stats_icon.png">
+        <Tab Title="Gráficas" Icon="chart_icon.png">
             <ShellContent Route="Estadisticas"
                           ContentTemplate="{DataTemplate views:Estadisticas}"
                           Shell.NavBarIsVisible="False"/>

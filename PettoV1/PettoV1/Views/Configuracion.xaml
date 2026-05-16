@@ -85,15 +85,13 @@
                         <Border BackgroundColor="{StaticResource GlassInputBackground}"
                                 Stroke="{StaticResource GlassCardBorder}"
                                 StrokeThickness="1" Padding="4,0">
-                            <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10"/>
+                            </Border.StrokeShape>
                             <Border.Triggers>
                                 <DataTrigger TargetType="Border"
-                                             Binding="{Binding IsContrasenaActualValida}" Value="False">
+                                             Binding="{Binding ContrasenaActualIncorrecta}" Value="True">
                                     <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Border"
-                                             Binding="{Binding IsContrasenaActualValida}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                                 </DataTrigger>
                             </Border.Triggers>
                             <Entry Placeholder="Ingresa tu contraseña actual"
@@ -101,19 +99,10 @@
                                    IsPassword="True"
                                    BackgroundColor="Transparent"/>
                         </Border>
-                        <Label Text="La contraseña actual es incorrecta"
-                               TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding IsContrasenaActualValida}" Value="False">
-                                    <Setter Property="IsVisible" Value="True"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding IsContrasenaActualValida}" Value="True">
-                                    <Setter Property="IsVisible" Value="False"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
+                        <!-- Error contraseña actual: solo aparece si fue incorrecta al intentar guardar -->
+                        <Label Text="❌ La contraseña actual es incorrecta"
+                               TextColor="{StaticResource DangerText}" FontSize="12"
+                               IsVisible="{Binding ContrasenaActualIncorrecta}"/>
 
                         <!-- Nueva contraseña -->
                         <Label Text="Nueva contraseña" FontSize="13"
@@ -121,15 +110,14 @@
                         <Border BackgroundColor="{StaticResource GlassInputBackground}"
                                 Stroke="{StaticResource GlassCardBorder}"
                                 StrokeThickness="1" Padding="4,0">
-                            <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10"/>
+                            </Border.StrokeShape>
                             <Border.Triggers>
+                                <!-- Solo pone rojo cuando hay contenido Y no coinciden -->
                                 <DataTrigger TargetType="Border"
-                                             Binding="{Binding IsNuevaContrasenaValida}" Value="False">
+                                             Binding="{Binding MostrarErrorCoincidencia}" Value="True">
                                     <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Border"
-                                             Binding="{Binding IsNuevaContrasenaValida}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                                 </DataTrigger>
                             </Border.Triggers>
                             <Entry Placeholder="Mínimo 6 caracteres"
@@ -144,15 +132,13 @@
                         <Border BackgroundColor="{StaticResource GlassInputBackground}"
                                 Stroke="{StaticResource GlassCardBorder}"
                                 StrokeThickness="1" Padding="4,0">
-                            <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10"/>
+                            </Border.StrokeShape>
                             <Border.Triggers>
                                 <DataTrigger TargetType="Border"
-                                             Binding="{Binding IsNuevaContrasenaValida}" Value="False">
+                                             Binding="{Binding MostrarErrorCoincidencia}" Value="True">
                                     <Setter Property="BackgroundColor" Value="{StaticResource GlassInputInvalid}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Border"
-                                             Binding="{Binding IsNuevaContrasenaValida}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource GlassInputBackground}"/>
                                 </DataTrigger>
                             </Border.Triggers>
                             <Entry Placeholder="Repite la nueva contraseña"
@@ -160,19 +146,10 @@
                                    IsPassword="True"
                                    BackgroundColor="Transparent"/>
                         </Border>
-                        <Label Text="Las contraseñas no coinciden o son muy cortas"
-                               TextColor="{StaticResource ErrorRed}" FontSize="12" IsVisible="False">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding IsNuevaContrasenaValida}" Value="False">
-                                    <Setter Property="IsVisible" Value="True"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding IsNuevaContrasenaValida}" Value="True">
-                                    <Setter Property="IsVisible" Value="False"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
+                        <!-- Error coincidencia: solo cuando ambos campos tienen texto y no coinciden -->
+                        <Label Text="❌ Las contraseñas no coinciden o son muy cortas"
+                               TextColor="{StaticResource DangerText}" FontSize="12"
+                               IsVisible="{Binding MostrarErrorCoincidencia}"/>
 
                     </VerticalStackLayout>
                 </Frame>
